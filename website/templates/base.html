@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+    {% load static %}
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+
+    <title>
+        {% block title %}
+    
+        {% endblock title %}
+    </title>
+  </head>
+  <body>
+      {% block content %}
+          blockname
+      {% endblock content %}
+
+    <script src="{% static 'js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+
+  </body>
+</html>
