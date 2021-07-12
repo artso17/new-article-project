@@ -5,14 +5,30 @@ from .models import *
 
 
 class ArticleListView(ListView):
-    model = Article
+    queryset = Article.objects.all().order_by('-updated')[:20]
     template_name = "article_list.html"
-
     extra_context = {
-        'page_title': 'list View'
+        'page_title': 'list View',
     }
 
     def get_context_data(self, **kwargs):
         self.kwargs.update(self.extra_context)
-        # kwargs = self.kwargs
+        return super().get_context_data()
+
+
+class ArticlecategoryListView(ListView):
+    template_name = "TEMPLATE_NAME"
+
+    extra_context = {
+        'page_title': 'list View',
+    }
+
+    def get_queryset(self):
+        queryset = Article.objects.filter(
+            category__slug=self.kwargs['slug'])[:2]
+        return super().get_queryset()
+
+    def get_context_data(self, **kwargs):
+        self.extra_context['slug'] = self.kwargs['slug']
+        self.kwargs.update(self.extra_context)
         return super().get_context_data()

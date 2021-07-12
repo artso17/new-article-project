@@ -4,4 +4,9 @@ from django.contrib import admin
 from .models import *
 
 
+class Readonly(admin.ModelAdmin):
+    readonly_fields = ['slug']
+
+
 admin.site.register(Article)
+admin.site.register(Category, Readonly)

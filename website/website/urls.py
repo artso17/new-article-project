@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from home.views import *
 
 urlpatterns = [
+    path('category/<str:slug>', ArticleListView.as_view(), name='category'),
     path('', ArticleListView.as_view(), name='list'),
     path('admin/', admin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls'))

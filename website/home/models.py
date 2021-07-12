@@ -6,13 +6,36 @@ from django.contrib.auth import settings
 from ckeditor_uploader.fields import RichTextUploadingField
 
 
+class Category(models.Model):
+    """Model definition for Category."""
+
+    name = models.CharField(max_length=50)
+    slug = models.SlugField(blank=True, editable=False)
+
+    class Meta:
+        """Meta definition for Category."""
+
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
+
+    def save(self):
+        self.slug = slugify(self.name)
+        return super().save()
+
+    def __str__(self):
+        """Unicode representation of Category."""
+        return f"{self.name}"
+
+
 class Article(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     judul = models.CharField(max_length=100, blank=True)
+    category = models.ManyToManyField(Category)
     image = models.ImageField(upload_to='image/artikel', blank=True)
     isi = RichTextUploadingField()
     created = models.DateField(auto_now_add=True, blank=True, editable=False)
     updated = models.DateField(auto_now=True, blank=True, editable=False)
+    published = models.BooleanField(default=False)
     slug = models.SlugField(blank=True, editable=False)
 
     def save(self):
