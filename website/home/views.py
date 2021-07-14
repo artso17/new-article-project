@@ -9,6 +9,7 @@ class ArticleListView(ListView):
     template_name = "article_list.html"
     extra_context = {
         'page_title': 'list View',
+        'categories': Category.objects.all(),
     }
 
     def get_context_data(self, **kwargs):
@@ -21,6 +22,7 @@ class ArticleCategoryListView(ListView):
 
     extra_context = {
         'page_title': 'list View',
+        'categories': Category.objects.all()
     }
 
     def get_queryset(self):

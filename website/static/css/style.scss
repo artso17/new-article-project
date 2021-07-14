@@ -1,0 +1,27 @@
+.article-row {
+    .row {
+        height: 250px;
+    }
+
+    .image-thumbnail {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        p {
+            display: none !important;
+        }
+    }
+}
+
+@media (max-width: 767.98px) {
+    .article-row {
+        .image-thumbnail {
+            display: none;
+        }
+    }
+
+    .header-container {
+        flex-direction: column-reverse;
+    }
+}
