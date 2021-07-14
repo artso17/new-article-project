@@ -16,8 +16,8 @@ class ArticleListView(ListView):
         return super().get_context_data()
 
 
-class ArticlecategoryListView(ListView):
-    template_name = "TEMPLATE_NAME"
+class ArticleCategoryListView(ListView):
+    template_name = "article_list.html"
 
     extra_context = {
         'page_title': 'list View',
@@ -26,7 +26,7 @@ class ArticlecategoryListView(ListView):
     def get_queryset(self):
         queryset = Article.objects.filter(
             category__slug=self.kwargs['slug'])[:2]
-        return super().get_queryset()
+        return queryset
 
     def get_context_data(self, **kwargs):
         self.extra_context['slug'] = self.kwargs['slug']

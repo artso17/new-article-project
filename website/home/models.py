@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.contrib.auth import settings
 from ckeditor_uploader.fields import RichTextUploadingField
+from PIL import Image
 
 
 class Category(models.Model):
@@ -39,7 +40,14 @@ class Article(models.Model):
     slug = models.SlugField(blank=True, editable=False)
 
     def save(self):
+        super().save()
         self.slug = slugify(self.judul)
+        img = Image.open(self.image.path)
+
+        if img.height > 600 or img.width > 600:
+            output_size = (600, 600)
+            img.thumbnail(output_size)
+            img.save(self.image.path, optimize=True, quality=30)
         return super().save()
 
     def __str__(self):
