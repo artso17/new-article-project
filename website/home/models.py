@@ -32,7 +32,7 @@ class Article(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     judul = models.CharField(max_length=100, blank=True)
     category = models.ManyToManyField(Category)
-    image = models.ImageField(upload_to='image/artikel', blank=True)
+    image = models.ImageField(upload_to='image/artikel',)
     isi = RichTextUploadingField()
     created = models.DateField(auto_now_add=True, blank=True, editable=False)
     updated = models.DateField(auto_now=True, blank=True, editable=False)

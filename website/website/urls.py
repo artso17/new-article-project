@@ -20,7 +20,8 @@ from django.conf.urls.static import static
 from home.views import *
 
 urlpatterns = [
-    path('detail/<str:pk>', ArticleDetailView.as_view(), name='detail'),
+    path('detail/<str:pk>/<slug:slug>',
+         ArticleDetailView.as_view(), name='detail'),
     path('category/<slug:slug>', ArticleCategoryListView.as_view(), name='category'),
     path('', ArticleListView.as_view(), name='list'),
     path('admin/', admin.site.urls),

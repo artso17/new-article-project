@@ -10,7 +10,7 @@
 
 {% block content_extra %}
     <header style="margin-top: 100px;">
-        <div class="header-container container p-4 row">
+        <div class="header-container reverse-column container p-4 row">
             <div class="col-md-5">
                 <h2 class="text-capitalize">large feature that you should not miss it</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia libero ducimus asperiores cupiditate soluta consequatur labore doloremque voluptates vero, minus temporibus, dolorem totam sint quis mollitia qui repellat voluptas accusantium.</p>
@@ -26,7 +26,7 @@
       {% for article in object_list  %}
 
 <!-- queryset filter -->
-        {% if article.published and slug %}
+        {% if slug %}
           <div class="col-md-6">
             <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
               <div class="col p-4 d-flex flex-column position-static">
@@ -38,7 +38,11 @@
                 <h3 class="mb-0">{{article.judul|title}}</h3>
                 <div class="mb-1 text-muted">{{article.updated}}</div>
                 <p class="card-text mb-auto">{{article.isi|safe|truncatewords:10}}</p>
-                <a href="#" class="stretched-link">Continue reading</a>
+                {% for category in article.category.all %}
+                  {% if category.slug == slug %}
+                    <a href="{% url 'detail' article.id category.slug %}" class="stretched-link">Continue reading</a>
+                  {% endif %}
+                {% endfor %}
               </div>
               
                 {% if article.image %}
@@ -65,7 +69,7 @@
                   <h3 class="mb-0">{{article.judul|title}}</h3>
                   <div class="mb-1 text-muted">{{article.updated}}</div>
                   <p class="card-text mb-auto">{{article.isi|safe|truncatewords:10}}</p>
-                  <a href="#" class="stretched-link">Continue reading</a>
+                  <a href="{% url 'detail' article.id article.category.all|first|slugify %}" class="stretched-link">Continue reading</a>
                 </div>
                 {% if article.image %}
                   <div class="image-thumbnail col-md-4  d-lg-block" style="background-image:url({{ article.image.url }});">

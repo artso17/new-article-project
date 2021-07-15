@@ -14,6 +14,31 @@
     }
 }
 
+.header-container {
+    .thumbnail-box {
+        border-radius: 20px;
+
+        img {
+            height: 350px;
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    .header-container {
+        .thumbnail-box {
+            img {
+                height: 150px;
+            }
+        }
+    }
+
+    .category-section {
+        position: static !important
+    }
+}
+
+
 @media (max-width: 767.98px) {
     .article-row {
         .image-thumbnail {
@@ -21,7 +46,10 @@
         }
     }
 
-    .header-container {
+    .reverse-column {
         flex-direction: column-reverse;
     }
+
+
+
 }

@@ -12,11 +12,28 @@
   display: none !important;
 }
 
+.header-container .thumbnail-box {
+  border-radius: 20px;
+}
+
+.header-container .thumbnail-box img {
+  height: 350px;
+}
+
+@media (max-width: 992px) {
+  .header-container .thumbnail-box img {
+    height: 150px;
+  }
+  .category-section {
+    position: static !important;
+  }
+}
+
 @media (max-width: 767.98px) {
   .article-row .image-thumbnail {
     display: none;
   }
-  .header-container {
+  .reverse-column {
     -webkit-box-orient: vertical;
     -webkit-box-direction: reverse;
         -ms-flex-direction: column-reverse;
