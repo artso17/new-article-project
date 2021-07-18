@@ -1,4 +1,3 @@
 virtual
 .env
-style.scss
 website\static\css\style.scss
