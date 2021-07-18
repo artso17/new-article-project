@@ -27,10 +27,29 @@
             </ul>
           </li>
         </ul>
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        <div class="d-flex mb-2 mb-lg-0 align-items-center justify-content-between">
+            <h6 class="mb-0 pe-2"><i>{{request.user.first_name}}</i></h6>
+            
+            {% if request.user.is_superuser %}
+              <a href="{% url 'adminList' %}" class="nav-link">admin site</a>
+              
+            {% endif %}
+              
+            <form class="d-flex" action="{% url 'searchView' %}" method="POST">
+              {% csrf_token %}
+              <input class="form-control me-2" type="input" placeholder="Cari..." aria-label="Search" name="searched">
+              <button class="btn btn-outline-success text-capitalize" type="submit">cari</button>
+            </form>
+        </div>
+        <!-- <div class="d-flex align-items-center">
+          
+          <form class="d-flex" action="{% url 'searchView' %}" method="POST">
+            {% csrf_token %}
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searched">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+
+        </div> -->
       </div>
     </div>
   </nav>
@@ -56,11 +75,11 @@
                         <h3>Links</h3>
                         <hr>
                         <a class="nav-link text-capitalize py-0" href="#home"><p class='text-light'>home</p></a>
-                        <a class="nav-link text-capitalize py-0" href="#about"><p class='text-light'>about</p></a>
-                        <a class="nav-link text-capitalize py-0" href="#service"><p class='text-light'>service</p></a>
-                        <a class="nav-link text-capitalize py-0" href="#gallery"><p class='text-light'>gallery</p></a>
-                        <a class="nav-link text-capitalize py-0" href="#contact"><p class='text-light'>contact</p></a>
-                        <a class="nav-link text-capitalize py-0 disabled" href="#about"><p class='text-light'>blog</p></a>
+                        <a class="nav-link text-capitalize py-0" href="https://artsodev.com/#about"><p class='text-light'>about</p></a>
+                        <a class="nav-link text-capitalize py-0" href="https://artsodev.com/#service"><p class='text-light'>service</p></a>
+                        <a class="nav-link text-capitalize py-0" href="https://artsodev.com/#gallery"><p class='text-light'>gallery</p></a>
+                        <a class="nav-link text-capitalize py-0" href="https://artsodev.com/#contact"><p class='text-light'>contact</p></a>
+                        <a class="nav-link text-capitalize py-0 disabled" href="#"><p class='text-light'>blog</p></a>
                     </div>
                   </div>
               </div>

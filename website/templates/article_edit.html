@@ -1,0 +1,28 @@
+{% extends 'container.html' %}
+
+
+{% block title %}
+    {{page_title}} | Artsolog
+{% endblock title %}
+    
+
+
+{% block content_extra %}
+<main style="padding-top: 100px;">
+    <form method="post" enctype="multipart/form-data" class="pb-4">
+        {% csrf_token %}
+        {{form.as_p}}
+        {{form.media}}
+        <div class="d-grid gap-2">
+            <button class="btn btn-primary text-capitalize" type="submit">simpan</button>
+          </div>
+    </form>
+
+    <script>
+        if(document.getElementById('id_author')!=null) return document.getElementById('id_author').value={{request.user.id}};
+
+    </script>
+</main>
+    
+{% endblock content_extra %}
+    

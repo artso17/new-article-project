@@ -7,7 +7,7 @@
 
 
 {% block content_extra %}
-    <div class="row" style="margin-top: 100px;">
+    <div class="row" style="padding-top: 100px;">
         <div class="col-lg-7">
             <header style="">
                 <div class="header-container  container p-4">
@@ -19,7 +19,13 @@
                     </div>
                     <h2 class="">{{ object.judul|title }}</h2>
                     <h6 class="text-capitalize">oleh : <span class="text-muted">{{object.author.first_name}} {{object.author.last_name}}</span></h6>
-                    <h6 class="text-capitalize">kategori : <span class="text-muted text-uppercase">{{category.name}}</span></h6>
+                    <h6 class="text-capitalize">kategori : <span class="text-muted text-uppercase"><span class="text-primary">{{curr_category.name}}</span> | 
+                    {% for category in object.category.all %}
+                        {% if category != curr_category %}
+                            {{category.name}} |
+                        {% endif %}
+                    {% endfor %}
+                        </span></h6>
 
                     <h6 class="text-capitalize"><span class="text-muted">{{object.updated}}</span></h6>
                 </div>
@@ -35,14 +41,18 @@
                     <div class="header-container  container p-4">
                         <h4 class="text-capitalize">Artikel serupa</h4>
                         <hr>
-                        
-                        {% for article in same_articles %}
-                            <h6 class="text-capitalize text-primary">{{article.judul}}</h6>
-                            <p class="">{{ article.updated }}</p>
-                            <hr>
-                        {% endfor %}
+                        <div class="list-group">
+                            {% for article in same_articles %}
+                            <a href="{% url 'detail' article.id curr_category.slug %}" class="list-group-item list-group-item-action">
+                                <h6 class="text-capitalize text-primary">{{article.judul}}</h6>
+                                <p class="">{{ article.updated }}</p>
+                                <hr>
+                            </a>
+                            {% endfor %}
+                            <a href="{% url 'category' curr_category.slug %}" class="list-group-item text-primary">Selengkapnya...</a>
+
+                          </div>
                             
-                        <a href="{% url 'category' category.slug %}">Selengkapnya...</a>
                     </div>
                 </header>
             </main>

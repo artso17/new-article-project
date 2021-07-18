@@ -1,0 +1,154 @@
+{% extends 'container.html' %}
+
+
+{% block title %}
+    {{page_title}} | Artsolog
+{% endblock title %}
+    
+
+{% block content_extra %}
+<header style="padding-top: 100px;">
+    <center>
+        <h2>Hai <span class="text-primary">{{request.user.first_name}}</span>, anda adalah 
+        {% if request.user.is_superuser and request.user.is_staff  %}
+            <span class="text-primary">super user,</span>
+        {% elif request.user.is_staff %}
+            <span class="text-primary">staff,</span>
+        {% else %}
+            <span class="text-primary">pengunjung,</span>
+        {% endif %}
+             selamat datang di admin list</h2>
+
+    </center>
+</header>
+<article class="row article-row">
+    <section class="article-button container p-5">
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseArticle" aria-expanded="false" aria-controls="collapse">
+                Article
+            </button>
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCategory" aria-expanded="false" aria-controls="collapse">
+                Category
+            </button>
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUser" aria-expanded="false" aria-controls="collapse">
+                User
+            </button>
+            
+    </section>
+    <section class="article-collapse pb-5">
+        <div class="collapse  p-2"  id="collapseArticle">
+            
+            <div class="container-fluid d-flex mb-3 justify-content-between">
+                <a class="btn btn-primary text-capitalize " href="#" role="button">tambah article</a>
+                <form class="d-flex" method="post">
+                    {% csrf_token %}
+                  <input class="form-control me-2" type="input" name="article_search" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+              </div>
+            <div class="card card-body overflow-auto" style="max-height: 500px;">
+                <table class="table" aria-labelledby="dropdownMenuButton1">
+                    <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Judul</th>
+                        <th scope="col">Kategori</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Update</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    
+                    {% for article in object_list %}
+                        <tr>
+                            <th scope="row">{{forloop.counter}}</th>
+                            <td>{{article.judul|truncatewords:5}}</td>
+                            <td>
+                            {% for category in article.category.all %}
+                                {{category}}
+                            {% endfor %}
+                            </td>
+                            <td>{{article.author}}</td>
+                            <td>{{article.updated|date:"d/m/y"}}</td>
+                            <td><a class="btn btn-danger text-capitalize" href="#" role="button">delete</a> | <a class="btn btn-warning text-capitalize" href="#" role="button">updated</a></td>
+                        </tr>
+                    {% endfor %}
+                        
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+        <div class="collapse  p-2"  id="collapseCategory">
+            <a class="btn btn-primary text-capitalize mb-3" href="#" role="button">tambah kategori</a>
+            <div class="card card-body overflow-auto" style="max-height: 500px;">
+                <table class="table" aria-labelledby="dropdownMenuButton2">
+                    <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    
+                    {% for category in categories %}
+                        <tr>
+                            <th scope="row">{{forloop.counter}}</th>
+                            <td>{{category.name|truncatewords:5}}</td>
+                            <td><a class="btn btn-danger text-capitalize" href="#" role="button">delete</a> | <a class="btn btn-warning text-capitalize" href="#" role="button">updated</a></td>
+                        </tr>
+                    {% endfor %}
+                        
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
+        <div class="collapse  p-2"  id="collapseUser">
+
+            <div class="card card-body overflow-auto" style="max-height: 500px;">
+                <table class="table" aria-labelledby="dropdownMenuButton3">
+                    <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Group</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    
+                    {% for user in users %}
+                        <tr>
+                            <th scope="row">{{forloop.counter}}</th>
+                            <td>{{user.username|truncatewords:5}}</td>
+                            <td>
+                                {% if user.is_superuser and user.is_staff  %}
+                                    <span class="">super user | staff</span>
+                                {% elif user.is_staff %}
+                                    <span class="">staff</span>
+                                {% else %}
+                                    <span class="">pengunjung</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                            {% for group in user.groups.all %}
+                                {{group}}
+                            {% endfor %}
+                                </td>
+                            <td><a class="btn btn-danger text-capitalize" href="#" role="button">delete</a> | <a class="btn btn-warning text-capitalize" href="#" role="button">updated</a></td>
+                        </tr>
+                    {% endfor %}
+                        
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
+    </section>
+    
+</article>
+{% endblock content_extra %}
+    

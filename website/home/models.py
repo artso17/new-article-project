@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
@@ -34,6 +35,7 @@ class Article(models.Model):
     category = models.ManyToManyField(Category)
     image = models.ImageField(upload_to='image/artikel',)
     isi = RichTextUploadingField()
+    likes = models.ManyToManyField(User, related_name='likes_blog', blank=True)
     created = models.DateField(auto_now_add=True, blank=True, editable=False)
     updated = models.DateField(auto_now=True, blank=True, editable=False)
     published = models.BooleanField(default=False)
@@ -49,6 +51,9 @@ class Article(models.Model):
             img.thumbnail(output_size)
             img.save(self.image.path, optimize=True, quality=30)
         return super().save()
+
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'pk': self.id, 'slug': slugify(self.category.first())})
 
     def __str__(self):
         return f'{self.judul} oleh {self.author}'

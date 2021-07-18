@@ -2,14 +2,24 @@
 
 
 {% block title %}
-    {{page_title}}
-{% endblock title %}
+  
+  {% if curr_page %}
+    {{curr_page|upper}} | Artsolog
+    
+  {% else %}
+    Artsolog
+  {% endif %}
+    
+  {% endblock title %}
     
 
 
 
 {% block content_extra %}
-    <header style="margin-top: 100px;">
+  {% if object_list %}
+  
+    
+    <header style="padding-top: 100px;">
         <div class="header-container reverse-column container p-4 row">
             <div class="col-md-5">
                 <h2 class="text-capitalize">large feature that you should not miss it</h2>
@@ -27,7 +37,7 @@
 
 <!-- queryset filter -->
         {% if slug %}
-          <div class="col-md-6">
+          <div class="col-md-6 box-thumbnail">
             <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
               <div class="col p-4 d-flex flex-column position-static">
                 {% for category in article.category.all %}
@@ -62,25 +72,30 @@
 
 <!-- queryset all -->
         {% else %}
-          <div class="col-md-6">
-              <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                <div class="col p-4 d-flex flex-column position-static">
-                  <strong class="d-inline-block mb-2 text-primary text-uppercase">{{article.category.all|first}}</strong>
-                  <h3 class="mb-0">{{article.judul|title}}</h3>
-                  <div class="mb-1 text-muted">{{article.updated}}</div>
-                  <p class="card-text mb-auto">{{article.isi|safe|truncatewords:10}}</p>
-                  <a href="{% url 'detail' article.id article.category.all|first|slugify %}" class="stretched-link">Continue reading</a>
-                </div>
-                {% if article.image %}
-                  <div class="image-thumbnail col-md-4  d-lg-block" style="background-image:url({{ article.image.url }});">
-                    <p>ansatsu</p>
+          <div class="col-md-6 ">
+            <div class="box-thumbnail" style="height:300px">
+            <a href="{% url 'detail' article.id article.category.all|first|slugify %}" class="a-thumbnail">
+                <div class="row g-0  border rounded overflow-hidden flex-md-row shadow-sm h-md-250 position-relative">
+                  <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary text-uppercase">{{article.category.all|first}}</strong>
+                    <h3 class="mb-0">{{article.judul|title}}</h3>
+                    <div class="mb-1 text-muted">{{article.updated}}</div>
+                    <p class="card-text mb-auto">{{article.isi|safe|truncatewords:10}}</p>
+                    Continue reading
                   </div>
-                {% else %}
-                <div class="col-auto d-none d-lg-block">
-                  <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="30%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                  {% if article.image %}
+                    <div class="image-thumbnail col-md-4  d-lg-block" style="background-image:url({{ article.image.url }});">
+                      <p>ansatsu</p>
+                    </div>
+                  {% else %}
+                  <div class="col-auto d-none d-lg-block">
+                    <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="30%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                  </div>
+                  {% endif %}
                 </div>
-                {% endif %}
-              </div>
+              
+            </a>
+            </div>
           </div>
           
         {% endif %}
@@ -91,5 +106,10 @@
 
     </article>
     
+  {% else %}
+  <center>
+    <h4 style="padding-top: 100px;">Ooops....We couldn't find anything</h4>
+  </center>
+  {% endif %}
 
 {% endblock content_extra %}

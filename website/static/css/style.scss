@@ -3,6 +3,17 @@
         height: 250px;
     }
 
+    .a-thumbnail {
+        color: rgba(0, 0, 0, 0.753);
+        text-decoration: none;
+        width: fit-content;
+        transition: 5s ease-in-out;
+
+        :hover .box-thumbnail {
+            top: -10px;
+        }
+    }
+
     .image-thumbnail {
         background-size: cover;
         background-position: center;
@@ -22,6 +33,28 @@
             height: 350px;
         }
     }
+}
+
+.box-thumbnail {
+
+
+    .row {
+        top: 0px;
+        transition: .3s;
+
+    }
+
+
+
+}
+
+#cke_id_isi {
+    width: 100% !important;
+}
+
+.box-thumbnail:hover .row {
+    top: -10px;
+    box-shadow: 0 2px 10px #00b4d85b !important;
 }
 
 @media (max-width: 992px) {
