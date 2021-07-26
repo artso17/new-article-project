@@ -1,3 +1,4 @@
+import json
 from .forms import *
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView
@@ -6,15 +7,33 @@ from django.contrib.auth.models import User
 from .models import *
 # Create your views here.
 
+from django.http import JsonResponse
 
-# def search_article_view(request):
-#     context = {}
-#     if request.method == 'POST' and request.POST['article_search']:
-#         search_article = request.POST['article_search']
-#         article = Article.objects.filter(Q(judul__contains=search_article))
-#         if article.exists():
-#             context['object_list'] = article[:20]
-#     return render(request)
+
+def search_article_view(request):
+    # print(request.is_ajax())
+    if request.is_ajax():
+        data = request.POST['data']
+        print(data)
+        return JsonResponse({'data': data})
+    return JsonResponse({})
+    # if request.method == 'POST':
+    # print(request.POST.__contains__('category_search'))
+    # print(request.POST == 'category_search')
+    # if request.POST.__contains__('category_search'):
+    #     print('true ini category search')
+    # if request.POST.__contains__('article_search'):
+    #     print('true ini article search')
+
+
+def admin_list_view(request):
+    context = {
+        'object_list': Article.objects.all(),
+        'page_title': 'Admin List',
+        'categories': Category.objects.all(),
+        'users': User.objects.all().order_by('date_joined')[:20]
+    }
+    return render(request, 'admin_listview.html', context)
 
 
 def search_view(request):
@@ -81,14 +100,14 @@ class ArticleDetailView(DetailView):
         return super().get_context_data()
 
 
-class AdminListView(ListView):
-    template_name = "admin_listview.html"
-    model = Article
-    extra_context = {
-        'page_title': 'Admin list',
-        'categories': Category.objects.all()[:20],
-        'users': User.objects.all().order_by('date_joined')[:20],
-    }
+# class AdminListView(ListView):
+#     template_name = "admin_listview.html"
+#     model = Article
+#     extra_context = {
+#         'page_title': 'Admin list',
+#         'categories': Category.objects.all()[:20],
+#         'users': User.objects.all().order_by('date_joined')[:20],
+#     }
 
 
 class ArticleCreateView(CreateView):

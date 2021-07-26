@@ -20,7 +20,9 @@ from django.conf.urls.static import static
 from home.views import *
 
 urlpatterns = [
-    path('admin-list/', AdminListView.as_view(), name='adminList'),
+    path('search-admin/', search_article_view, name='adminSearch'),
+    path('admin-list/', admin_list_view, name='adminList'),
+    # path('admin-list/', AdminListView.as_view(), name='adminList'),
     path('create/<str:model>', ArticleCreateView.as_view(), name='create'),
     path('search/', search_view, name='searchView'),
     path('detail/<str:pk>/<slug:slug>',

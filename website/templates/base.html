@@ -9,7 +9,7 @@
     <!-- Bootstrap CSS -->
     <link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>
         {% block title %}
     
@@ -22,6 +22,7 @@
       {% endblock content %}
 
     <script src="{% static 'js/bootstrap/bootstrap.bundle.min.js' %}"></script>
-
+    
+    <script src="{% static 'js/script.js' %}" defer></script>
   </body>
 </html>
