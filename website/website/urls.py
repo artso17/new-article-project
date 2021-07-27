@@ -22,7 +22,10 @@ from home.views import *
 urlpatterns = [
     path('search-admin/', search_article_view, name='adminSearch'),
     path('admin-list/', admin_list_view, name='adminList'),
-    # path('admin-list/', AdminListView.as_view(), name='adminList'),
+    path('delete/<str:model>/<str:pk>',
+         ArticleDeleteView.as_view(), name='delete'),
+    path('update/<str:model>/<str:pk>',
+         ArticleUpdateView.as_view(), name='update'),
     path('create/<str:model>', ArticleCreateView.as_view(), name='create'),
     path('search/', search_view, name='searchView'),
     path('detail/<str:pk>/<slug:slug>',

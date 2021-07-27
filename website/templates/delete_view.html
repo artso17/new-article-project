@@ -1,0 +1,15 @@
+{% extends 'container.html' %}
+
+
+{% block content_extra %}
+<section style="padding-top:100px">
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">ya</button>
+        <a href="{% url 'adminList' %}"></a>
+    </form>
+
+</section>
+    
+{% endblock content_extra %}
+    

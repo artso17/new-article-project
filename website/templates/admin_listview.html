@@ -24,14 +24,14 @@
 <article class="row article-row">
     <section class="article-section pb-5">
         <div class="container-fluid d-flex mb-3 justify-content-between">
-            <a class="btn btn-primary text-capitalize " href="#" role="button">tambah article</a>
+            <a class="btn btn-primary text-capitalize " href="{% url 'create' 'article' %}" role="button">tambah article</a>
             <form class="d-flex" method="post" action="{% url 'adminSearch' %}" id="articleform">
                 {% csrf_token %}
-              <input class="form-control me-2" type="input" name="article_search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
+              <input class="form-control me-2 search-input" type="input" name="article_search" placeholder="Search" aria-label="Search">
+              <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
             </form>
           </div>
-        <div class="card card-body overflow-auto" style="max-height: 300px;">
+        <div class="card card-body overflow-auto" style="height: 300px;">
             <table class="table" aria-labelledby="dropdownMenuButton1">
                 <thead>
                 <tr>
@@ -39,11 +39,12 @@
                     <th scope="col">Judul</th>
                     <th scope="col">Kategori</th>
                     <th scope="col">Author</th>
+                    <th scope="col">Published</th>
                     <th scope="col">Update</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
-                <tbody id="table-article">
+                <tbody id="table-article" class="table-body">
                 
                 {% for article in object_list %}
                     <tr >
@@ -55,8 +56,9 @@
                         {% endfor %}
                         </td>
                         <td>{{article.author}}</td>
+                        <td>{{article.published}}</td>
                         <td>{{article.updated|date:"d/m/y"}}</td>
-                        <td><a class="btn btn-danger text-capitalize" href="#" role="button">delete</a> | <a class="btn btn-warning text-capitalize" href="#" role="button">updated</a></td>
+                        <td><a class="btn btn-danger text-capitalize" href="{% url 'delete' 'article' article.id %}" role="button">delete</a> | <a class="btn btn-warning text-capitalize" href="{% url 'update' 'article' article.id %}" role="button">updated</a></td>
                     </tr>
                 {% endfor %}
                     
@@ -66,42 +68,32 @@
 
     </section>
 
-    <section class="article-section pb-5">
+    <section class="category-section pb-5">
         <div class="container-fluid d-flex mb-3 justify-content-between">
-            <a class="btn btn-primary text-capitalize " href="#" role="button">tambah article</a>
+            <a class="btn btn-primary text-capitalize " href="{% url 'create' 'category' %}" role="button">tambah category</a>
             <form action="{% url 'adminSearch' %}" class="d-flex" method="post">
                 {% csrf_token %}
                 
-              <input class="form-control me-2" type="input" name="category_search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
+              <input class="form-control me-2 search-input" type="input" name="category_search" placeholder="Search" aria-label="Search">
+              <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
             </form>
           </div>
-        <div class="card card-body overflow-auto" style="max-height: 300px;">
+        <div class="card card-body overflow-auto" style="height: 300px;">
             <table class="table" aria-labelledby="dropdownMenuButton1">
                 <thead>
                 <tr>
                     <th scope="col">No</th>
-                    <th scope="col">Judul</th>
-                    <th scope="col">Kategori</th>
-                    <th scope="col">Author</th>
-                    <th scope="col">Update</th>
+                    <th scope="col">Nama</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="table-category" class="table-body">
                 
-                {% for article in object_list %}
+                {% for category in categories %}
                     <tr>
                         <th scope="row">{{forloop.counter}}</th>
-                        <td>{{article.judul|truncatewords:5}}</td>
-                        <td>
-                        {% for category in article.category.all %}
-                            {{category}}
-                        {% endfor %}
-                        </td>
-                        <td>{{article.author}}</td>
-                        <td>{{article.updated|date:"d/m/y"}}</td>
-                        <td><a class="btn btn-danger text-capitalize" href="#" role="button">delete</a> | <a class="btn btn-warning text-capitalize" href="#" role="button">updated</a></td>
+                        <td>{{category.name|truncatewords:5}}</td>
+                        <td><a class="btn btn-danger text-capitalize" href="#" role="button">delete</a> | <a class="btn btn-warning text-capitalize" href="{% url 'update' 'category' category.id %}" role="button">updated</a></td>
                     </tr>
                 {% endfor %}
                     
@@ -111,6 +103,93 @@
 
     </section>
     
+    <section class="user-section pb-5">
+        <div class="container-fluid d-flex mb-3 justify-content-between">
+            <a class="btn btn-primary text-capitalize " href="{% url 'create' 'user' %}" role="button">tambah user</a>
+            <form action="{% url 'adminSearch' %}" class="d-flex" method="post">
+                {% csrf_token %}
+              <input class="form-control me-2 search-input" type="input" name="user_search" placeholder="Search" aria-label="Search">
+              <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
+            </form>
+          </div>
+        <div class="card card-body overflow-auto" style="height: 300px;">
+            <table class="table" aria-labelledby="dropdownMenuButton1">
+                <thead>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Group</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody id="table-user" class="table-body">
+                
+                {% for user in users %}
+                    <tr>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>{{user.username}}</td>
+                        <td> 
+                        {% if user.is_staff and user.is_superuser %}
+                            Active | Staff | Super User
+                        {% elif  user.is_active and user.is_staff %}
+                            Active | Staff 
+                        {% elif user.is_active %}
+                            Active
+                        {% else %}
+                            Inactive
+                        {% endif %}
+                        </td>
+                        <td>
+                            
+                            {% for group in user.groups.all %}
+                                {{group.name}}
+                            {% endfor %}
+                                
+                        </td>
+                        <td><a class="btn btn-danger text-capitalize" href="#" role="button">delete</a> | <a class="btn btn-warning text-capitalize" href="{% url 'update' 'user' user.id %}" role="button">updated</a></td>
+                    </tr>
+                {% endfor %}
+                    
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
+    <section class="group-section pb-5">
+        <div class="container-fluid d-flex mb-3 justify-content-between">
+            <a class="btn btn-primary text-capitalize " href="{% url 'create' 'group' %}" role="button">tambah group</a>
+            <form action="{% url 'adminSearch' %}" class="d-flex" method="post">
+                {% csrf_token %}
+              <input class="form-control me-2 search-input" type="input" name="group_search" placeholder="Search" aria-label="Search">
+              <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
+            </form>
+          </div>
+        <div class="card card-body overflow-auto" style="height: 300px;">
+            <table class="table" aria-labelledby="dropdownMenuButton1">
+                <thead>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">name</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody id="table-group" class="table-body">
+                
+                {% for group in groups %}
+                    <tr>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>{{group.name}}</td>
+                        <td><a class="btn btn-danger text-capitalize" href="#" role="button">delete</a> | <a class="btn btn-warning text-capitalize" href="{% url 'update' 'group' group.id %}" role="button">updated</a></td>
+                    </tr>
+                {% endfor %}
+                    
+                </tbody>
+            </table>
+        </div>
+
+    </section>
 </article>
 <script>
 
