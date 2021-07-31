@@ -8,6 +8,8 @@ from django.db.models import Q
 from django.contrib.auth.models import User, Group
 from django.urls import reverse, reverse_lazy
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from .decorators import allowed_hosts
 
 
 def search_article_view(request):
@@ -131,7 +133,10 @@ def search_article_view(request):
     return JsonResponse({})
 
 
+@login_required(login_url='account_login')
+@allowed_hosts(allowed_groups=['superuser'])
 def admin_list_view(request):
+    print(request.user.groups.all()[0])
     context = {
         'object_list': Article.objects.all(),
         'page_title': 'Admin List',

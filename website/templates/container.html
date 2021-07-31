@@ -5,7 +5,24 @@
 
 {% block extra_content %}
     <main id="main-html" class="">
-        <div class="container bg-light" style="min-height:45vh;">
+        <div class="container bg-light position-relative" style="min-height:45vh;">
+            
+            <div class="row position-absolute justify-content-center" style="top: 50px;width:100%;z-index:99">
+                <div class=" col-sm-5  position-absolute">
+                    <div class="row">
+                        {% for message in messages %}
+                            <div class="alert alert-primary alert-message alert-dismissible fade show position-absolute p-2 rounded-pill" role="alert">
+                            <center>
+                                <p class="alert-text  m-0"> {{message}}</p>
+                            </center>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" style="height:0;" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+                
+            </div>
             {% block content_extra %}
                 
             {% endblock content_extra %}

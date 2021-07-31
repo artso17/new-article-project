@@ -33,5 +33,6 @@ urlpatterns = [
     path('category/<slug:slug>', ArticleCategoryListView.as_view(), name='category'),
     path('', ArticleListView.as_view(), name='list'),
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls'))
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

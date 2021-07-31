@@ -1,0 +1,12 @@
+{% load static %}
+{% load i18n %}
+{% load account %}
+
+{% user_display user as user_display %}
+<p></p>
+<div class="alert alert-success alert-dismissible fade show rounded-pill p-2" role="alert">
+    <center>
+        <small class="alert-text"><strong>{% trans "Note" %}:</strong> {% blocktrans %}you are already logged in as {{ user_display }}.{% endblocktrans %}</small>
+    </center>
+    <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
+</div>

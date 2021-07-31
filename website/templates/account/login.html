@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block title %}
+  {% trans "Log in" %}
+{% endblock %}
+
+{% block content %}
+<div class="container col-sm-5 position-relative" >
+  <div class="row align-items-center " style='height:100vh;'>
+    {% for message in messages %}
+    <div class="alert alert-primary alert-message alert-dismissible fade show position-absolute p-2 rounded-pill" role="alert">
+      <center>
+        <p class="alert-text  m-0"> {{message}}</p>
+      </center>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" style="height:0;" aria-label="Close"></button>
+    </div>
+  {% endfor %}
+
+    <section class="login-section bg-light col p-5 rounded-3" style="border: 3px solid grey;">
+      <center>
+        <h1 class="text-capitalize"> Log in</h1>
+      </center>
+
+      <!-- form error -->
+      <div class="alert alert-warning d-none alert-dismissible fade show" role="alert">
+        <small class="alert-text alert-error"> You should check in on some of those fields below.</small>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <!-- akhir form error -->
+      
+      <form action="{% url 'account_login' %}" method="post">
+        {% csrf_token %}
+        <input type="text" class="form-control mb-3 rounded-pill" name="login" placeholder="Username" autocomplete="username" maxlength="150">
+        <input type="password" class="form-control mb-3 rounded-pill" name="password" placeholder="Password" autocomplete="current-password">
+        <label for="id_remember">Remember Me:</label> 
+        <input type="checkbox" class="form-check-input mb-3" name="remember" id="id_remember">
+
+        {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+        <div class="d-grid gap-2 mb-2">
+          <button class="btn btn-primary text-capitalize rounded-pill" type="submit">login</button>
+        </div>
+      </form>
+      <div class="d-grid gap-2 mb-2">
+        <a href="{% provider_login_url 'google' %}" class="btn btn-outline-success text-capitalize rounded-pill" type="button">google</a>
+      </div>
+      <div class="row justify-content-between">
+        <div class="col ">
+          <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot password?" %}</a>
+          
+        </div>
+        <div class="col text-end">
+          <a href="{{ signup_url }}">Don't have an account?</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- javascript -->
+{% include 'accounts_scripts.html' %}
+{% endblock %}
+
+  

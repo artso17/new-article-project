@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load account %}
+
+{% block head_title %}{% trans "Confirm E-mail Address" %}{% endblock %}
+
+
+{% block content %}
+<div class="container col-sm-7 position-relative" >
+    <div class="row align-items-center " style='height:100vh;'>
+    {% for message in messages %}
+        <div class="alert alert-primary alert-message alert-dismissible fade show position-absolute p-2 rounded-pill" role="alert">
+            <center>
+            <p class="alert-text  m-0"> {{message}}</p>
+            </center>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" style="height:0;" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    <section class="change-password-section bg-light col p-5 rounded-3" style="border: 3px solid grey;">
+        
+        {% if confirmation %}
+        <center>
+            <h1>{% trans "Confirm E-mail Address" %}</h1>
+        </center>
+        {% user_display confirmation.email_address.user as user_display %}
+
+        <p>{% blocktrans with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endblocktrans %}</p>
+
+        <!-- form error -->
+        <div class="alert alert-warning d-none alert-dismissible fade show" role="alert">
+            <small class="alert-text alert-error"> You should check in on some of those fields below.</small>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <!-- akhir form error -->
+
+        <form method="post" action="{% url 'account_confirm_email' confirmation.key %}" class="row">
+            {% csrf_token %}
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary rounded-pill">{% trans 'Confirm' %}</button>
+            </div>
+        </form>
+
+        {% else %}
+        <p>{% blocktrans %}This e-mail confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a new e-mail confirmation request</a>.{% endblocktrans %}</p>
+        {% endif %}
+            
+        
+    </section>
+
+    </div>
+</div>
+
+
+{% include 'accounts_scripts.html' %}
+{% endblock %}

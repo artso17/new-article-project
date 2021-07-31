@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Account Inactive" %}{% endblock %}
+
+{% block content %}
+
+
+
+
+<div class="container col-sm-5 position-relative" >
+    <div class="row align-items-center " style='height:100vh;'>
+        
+    {% for message in messages %}
+        <div class="alert alert-primary alert-message alert-dismissible fade show position-absolute p-2 rounded-pill" role="alert">
+            <center>
+            <p class="alert-text  m-0"> {{message}}</p>
+            </center>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" style="height:0;" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    <section class="change-password-section bg-light col p-5 rounded-3" style="border: 3px solid grey;">
+        <center>
+            <h1>{% trans "Account Inactive" %}</h1>
+            <p>{% trans "This account is inactive." %}</p>
+        </center>
+
+        <!-- form error -->
+        <div class="alert alert-warning d-none alert-dismissible fade show" role="alert">
+            <small class="alert-text alert-error"> You should check in on some of those fields below.</small>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <!-- akhir form error -->
+    </section>
+
+    </div>
+</div>
+
+
+{% include 'accounts_scripts.html' %}
+{% endblock %}

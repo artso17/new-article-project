@@ -40,10 +40,48 @@
   transition: .3s;
 }
 
+.alert-message {
+  top: -50px;
+  z-index: 9;
+  opacity: 0;
+  -webkit-animation-name: slidein;
+          animation-name: slidein;
+  -webkit-animation-duration: .8s;
+          animation-duration: .8s;
+  -webkit-animation-timing-function: ease;
+          animation-timing-function: ease;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+
+#cke_id_isi {
+  width: 100% !important;
+}
+
 .box-thumbnail:hover .row {
   top: -10px;
   -webkit-box-shadow: 0 2px 10px #00b4d85b !important;
           box-shadow: 0 2px 10px #00b4d85b !important;
+}
+
+@-webkit-keyframes slidein {
+  from {
+    top: -50px;
+  }
+  100% {
+    opacity: 1;
+    top: 20px;
+  }
+}
+
+@keyframes slidein {
+  from {
+    top: -50px;
+  }
+  100% {
+    opacity: 1;
+    top: 20px;
+  }
 }
 
 @media (max-width: 992px) {
