@@ -256,11 +256,16 @@ class ArticleDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         self.extra_context['curr_category'] = Category.objects.get(
-            slug=self.kwargs['slug'])
+            slug=self.kwargs['category'])
         self.extra_context['same_articles'] = Article.objects.filter(
-            category__slug=self.kwargs['slug']).exclude(Q(id=self.kwargs['pk']) | Q(published=False)).order_by('-updated')[:5]
+            category__slug=self.kwargs['category']).exclude(Q(id=self.kwargs['pk']) | Q(published=False)).order_by('-updated')[:5]
         self.kwargs.update(self.extra_context)
         return super().get_context_data()
+
+
+@method_decorator(login_required, name='dispatch')
+class ArticleDetailAuthView(ArticleDetailView):
+    pass
 
 
 @method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')

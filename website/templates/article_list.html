@@ -50,7 +50,7 @@
                 <p class="card-text mb-auto">{{article.isi|safe|truncatewords:10}}</p>
                 {% for category in article.category.all %}
                   {% if category.slug == slug %}
-                    <a href="{% url 'detail' article.id category.slug %}" class="stretched-link">Continue reading</a>
+                    <a href="{% url 'detail' article.slug article.id category.slug %}" class="stretched-link">Continue reading</a>
                   {% endif %}
                 {% endfor %}
               </div>
@@ -80,7 +80,7 @@
                     <h3 class="mb-0">{{article.judul|title}}</h3>
                     <div class="mb-1 text-muted">{{article.updated}} <strong>likes: </strong>{{ article.num_likes }}</div>
                     <p class="card-text mb-auto">{{article.isi|safe|truncatewords:10}}</p>
-                    <a href="{% url 'detail' article.id article.category.all|first|slugify %}" class="stretched-link">Continue reading</a>
+                    <a href="{% url 'detail' article.slug article.id article.category.all|first|slugify %}" class="stretched-link">Continue reading</a>
                   </div>
                   {% if article.image %}
                     <div class="image-thumbnail col-md-4  d-lg-block" style="background-image:url({{ article.image.url }});">

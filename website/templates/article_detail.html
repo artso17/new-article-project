@@ -1,10 +1,15 @@
 {% extends 'container.html' %}
-
+{% load static %}
 
 {% block title %}
     {{object.judul|title}} | Artsolog
 {% endblock title %}
 
+
+{% block meta_desc %}
+    <meta name="description" content="deskripsi">
+{% endblock  %}
+    
 
 {% block content_extra %}
     <div class="row" style="padding-top: 100px;">
@@ -46,7 +51,7 @@
                                 <button type="button" class="btn btn-outline-primary py-0" value="{{ object.id }}">like</button>
                             {% endif %}
                         {% else %}
-                                <a href="{% url 'likes' object.id %}">Login to action</a>
+                                <a href="{% url 'detailAuth' object.id curr_category.slug %}">Login to action</a>
                         {% endif %}
                             
                             
@@ -64,7 +69,7 @@
                         <hr>
                         <div class="list-group">
                             {% for article in same_articles %}
-                            <a href="{% url 'detail' article.id curr_category.slug %}" class="list-group-item list-group-item-action">
+                            <a href="{% url 'detail' article.slug article.id curr_category.slug %}" class="list-group-item list-group-item-action">
                                 <h6 class="text-capitalize text-primary">{{article.judul}}</h6>
                                 <p class="">{{ article.updated }}</p>
                                 <hr>
@@ -86,47 +91,6 @@
 
 
 {% block script %}
-<script>
-    const btn =document.getElementsByClassName('btn')[1]
-    const csrf=document.getElementsByName('csrfmiddlewaretoken')[0].value
-    const numLikes=document.getElementsByClassName('num-likes')[0]
-    console.log(numLikes)
-
-    const sendData=(data)=>{
-        $.ajax(
-            {
-                type:'POST',
-                url:'/likes/',
-                data:{
-                    'csrfmiddlewaretoken':csrf,
-                    'data':data,
-    
-                },
-                success:(res)=>{
-                    <!-- console.log(res.data[0]['liked']) -->
-                    numLikes.innerHTML=`${res.data[0]['num_likes']}`
-                    if (res.data[0]['liked'] == false){
-                        btn.innerHTML=`like`
-                        btn.classList.add('btn-outline-primary')
-                        btn.classList.remove('btn-secondary')
-                    }else{
-                        btn.innerHTML=`unlike`
-                        btn.classList.add('btn-secondary')
-                        btn.classList.remove('btn-outline-primary')
-                    }
-                },
-                error:(err)=>{
-                    console.log(err)
-                }
-    
-            }
-        )
-        
-    }
-
-    btn.addEventListener('click',e=>{
-        sendData(btn.value)
-    })
-</script>
+<script type="module" src="{% static 'js/article_detail.js' %}"></script>
 {% endblock  %}
     
