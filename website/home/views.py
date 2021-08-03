@@ -1,7 +1,7 @@
 import json
 from .forms import *
 from .models import *
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.list import MultipleObjectMixin
 from django.db.models import Q
@@ -10,8 +10,45 @@ from django.urls import reverse, reverse_lazy
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from .decorators import allowed_hosts
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.utils.decorators import method_decorator
+from django.http import HttpResponseRedirect
 
 
+@login_required
+def likes_ajax_view(request):
+    if request.is_ajax():
+        data = request.POST['data']
+        pk = data
+        obj = get_object_or_404(Article, id=pk)
+        print(obj.category.first().slug)
+        liked = False
+        if request.user in obj.likes.all():
+            obj.likes.remove(request.user)
+        else:
+            obj.likes.add(request.user)
+            liked = True
+        print(obj.num_likes)
+        data = [{
+            'num_likes': obj.num_likes,
+            'liked': liked
+        }]
+        return JsonResponse({'data': data})
+
+
+@login_required
+def likes_view(request, *args, **kwargs):
+    obj = get_object_or_404(Article, id=kwargs['pk'])
+    print(obj.category.first().slug)
+    if request.user in obj.likes.all():
+        obj.likes.remove(request.user)
+    else:
+        obj.likes.add(request.user)
+    return HttpResponseRedirect(reverse('detail', kwargs={'slug': obj.category.first().slug, 'pk': kwargs['pk']}))
+
+
+@login_required(login_url='account_login')
+@allowed_hosts(allowed_groups=['superuser'])
 def search_article_view(request):
     if request.is_ajax():
         res = None
@@ -226,6 +263,7 @@ class ArticleDetailView(DetailView):
         return super().get_context_data()
 
 
+@method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
 class ArticleCreateView(GetFormClassMixin, CreateView):
     template_name = "article_edit.html"
     extra_context = {
@@ -233,6 +271,7 @@ class ArticleCreateView(GetFormClassMixin, CreateView):
     }
 
 
+@method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
 class ArticleUpdateView(GetQuerysetMixin, GetFormClassMixin, UpdateView):
     template_name = "article_edit.html"
     extra_context = {
@@ -247,6 +286,7 @@ class ArticleUpdateView(GetQuerysetMixin, GetFormClassMixin, UpdateView):
         return url
 
 
+@method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
 class ArticleDeleteView(GetQuerysetMixin, DeleteView):
     template_name = "delete_view.html"
     success_url = reverse_lazy('adminList')

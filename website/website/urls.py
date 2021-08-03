@@ -20,6 +20,8 @@ from django.conf.urls.static import static
 from home.views import *
 
 urlpatterns = [
+    path('likes/<str:pk>', likes_view, name='likes'),
+    path('likes/', likes_ajax_view, name='likesAjax'),
     path('search-admin/', search_article_view, name='adminSearch'),
     path('admin-list/', admin_list_view, name='adminList'),
     path('delete/<str:model>/<str:pk>',

@@ -55,5 +55,28 @@ class Article(models.Model):
     def get_absolute_url(self):
         return reverse('detail', kwargs={'pk': self.id, 'slug': slugify(self.category.first())})
 
+    @property
+    def num_likes(self):
+        return self.likes.all().count()
+
     def __str__(self):
         return f'{self.judul} oleh {self.author}'
+
+
+class Comment(models.Model):
+    """Model definition for Comment."""
+
+    article = models.ForeignKey(
+        Article, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    isi = models.TextField()
+
+    class Meta:
+        """Meta definition for Comment."""
+
+        verbose_name = 'Comment'
+        verbose_name_plural = 'Comments'
+
+    def __str__(self):
+        """Unicode representation of Comment."""
+        return f"{self.author}"

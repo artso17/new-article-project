@@ -2,7 +2,7 @@
 
 
 {% block title %}
-    {{page_title}}
+    {{object.judul|title}} | Artsolog
 {% endblock title %}
 
 
@@ -32,8 +32,29 @@
             </header>
             <article class="p-4" style="text-justify: inter-word;text-align:justify;text-indent:3em;">
                 {{object.isi|safe}}
+                <div class="row">
+                    <div class="col-3">
+
+                        <p class="num-likes text-capitalize"><strong>likes:</strong>  {{object.num_likes}}</p>
+                    </div>
+                    <div class="col-4">
+                        
+                        {% if request.user.is_authenticated %}
+                            {% if request.user in object.likes.all %}
+                                <button type="button" class="btn btn-secondary py-0" value="{{ object.id }}">unlike</button>
+                            {% else %}
+                                <button type="button" class="btn btn-outline-primary py-0" value="{{ object.id }}">like</button>
+                            {% endif %}
+                        {% else %}
+                                <a href="{% url 'likes' object.id %}">Login to action</a>
+                        {% endif %}
+                            
+                            
+                    </div>
+
+                </div>
             </article>
-    
+            
         </div>
         <section class="category-section col-lg-4 me-auto " style="right: 0;">
             <main class="position-sticky" style="top:100px;">
@@ -57,7 +78,55 @@
                 </header>
             </main>
         </section>
-
+        
     </div>
 
+    
 {% endblock %}
+
+
+{% block script %}
+<script>
+    const btn =document.getElementsByClassName('btn')[1]
+    const csrf=document.getElementsByName('csrfmiddlewaretoken')[0].value
+    const numLikes=document.getElementsByClassName('num-likes')[0]
+    console.log(numLikes)
+
+    const sendData=(data)=>{
+        $.ajax(
+            {
+                type:'POST',
+                url:'/likes/',
+                data:{
+                    'csrfmiddlewaretoken':csrf,
+                    'data':data,
+    
+                },
+                success:(res)=>{
+                    <!-- console.log(res.data[0]['liked']) -->
+                    numLikes.innerHTML=`${res.data[0]['num_likes']}`
+                    if (res.data[0]['liked'] == false){
+                        btn.innerHTML=`like`
+                        btn.classList.add('btn-outline-primary')
+                        btn.classList.remove('btn-secondary')
+                    }else{
+                        btn.innerHTML=`unlike`
+                        btn.classList.add('btn-secondary')
+                        btn.classList.remove('btn-outline-primary')
+                    }
+                },
+                error:(err)=>{
+                    console.log(err)
+                }
+    
+            }
+        )
+        
+    }
+
+    btn.addEventListener('click',e=>{
+        sendData(btn.value)
+    })
+</script>
+{% endblock  %}
+    

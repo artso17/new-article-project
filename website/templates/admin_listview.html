@@ -26,9 +26,7 @@
         <div class="container-fluid d-flex mb-3 justify-content-between">
             <a class="btn btn-primary text-capitalize " href="{% url 'create' 'article' %}" role="button">tambah article</a>
             <form class="d-flex" method="post" action="{% url 'adminSearch' %}" id="articleform">
-                {% csrf_token %}
               <input class="form-control me-2 search-input" type="input" name="article_search" placeholder="Search" aria-label="Search">
-              <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
             </form>
           </div>
         <div class="card card-body overflow-auto" style="height: 300px;">
@@ -40,6 +38,7 @@
                     <th scope="col">Kategori</th>
                     <th scope="col">Author</th>
                     <th scope="col">Published</th>
+                    <th scope="col">likes</th>
                     <th scope="col">Update</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -49,7 +48,7 @@
                 {% for article in object_list %}
                     <tr >
                         <th scope="row">{{forloop.counter}}</th>
-                        <td>{{article.judul|truncatewords:5}}</td>
+                        <td>{{article.judul|truncatewords:2}}</td>
                         <td>
                         {% for category in article.category.all %}
                             {{category}}
@@ -57,6 +56,7 @@
                         </td>
                         <td>{{article.author}}</td>
                         <td>{{article.published}}</td>
+                        <td>{{article.num_likes}}</td>
                         <td>{{article.updated|date:"d/m/y"}}</td>
                         <td><a class="btn btn-danger text-capitalize" href="{% url 'delete' 'article' article.id %}" role="button">delete</a> | <a class="btn btn-warning text-capitalize" href="{% url 'update' 'article' article.id %}" role="button">updated</a></td>
                     </tr>
@@ -65,17 +65,13 @@
                 </tbody>
             </table>
         </div>
-
     </section>
 
     <section class="category-section pb-5">
         <div class="container-fluid d-flex mb-3 justify-content-between">
             <a class="btn btn-primary text-capitalize " href="{% url 'create' 'category' %}" role="button">tambah category</a>
             <form action="{% url 'adminSearch' %}" class="d-flex" method="post">
-                {% csrf_token %}
-                
               <input class="form-control me-2 search-input" type="input" name="category_search" placeholder="Search" aria-label="Search">
-              <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
             </form>
           </div>
         <div class="card card-body overflow-auto" style="height: 300px;">
@@ -107,9 +103,7 @@
         <div class="container-fluid d-flex mb-3 justify-content-between">
             <a class="btn btn-primary text-capitalize " href="{% url 'create' 'user' %}" role="button">tambah user</a>
             <form action="{% url 'adminSearch' %}" class="d-flex" method="post">
-                {% csrf_token %}
               <input class="form-control me-2 search-input" type="input" name="user_search" placeholder="Search" aria-label="Search">
-              <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
             </form>
           </div>
         <div class="card card-body overflow-auto" style="height: 300px;">
@@ -161,9 +155,7 @@
         <div class="container-fluid d-flex mb-3 justify-content-between">
             <a class="btn btn-primary text-capitalize " href="{% url 'create' 'group' %}" role="button">tambah group</a>
             <form action="{% url 'adminSearch' %}" class="d-flex" method="post">
-                {% csrf_token %}
               <input class="form-control me-2 search-input" type="input" name="group_search" placeholder="Search" aria-label="Search">
-              <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
             </form>
           </div>
         <div class="card card-body overflow-auto" style="height: 300px;">
@@ -196,7 +188,7 @@
     const csrf=document.getElementsByName('csrfmiddlewaretoken')[0].value
     const searchInput=document.getElementsByClassName('search-input')
     const tableBody=document.getElementsByClassName('table-body')
-    console.log(csrf)
+    <!-- console.log(csrf) -->
 
     const truncate = (data,maxword)=>{
         splitQs=data.split(' ')
@@ -294,7 +286,7 @@
                     }
                 },
                 error:(err)=>{
-                    console.log(err)
+                    <!-- console.log(err) -->
                 }
             }
         )
