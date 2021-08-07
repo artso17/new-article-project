@@ -1,7 +1,7 @@
 import json
 from .forms import *
 from .models import *
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.list import MultipleObjectMixin
 from django.db.models import Q
@@ -15,36 +15,58 @@ from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 
 
+def show_more_comments_view(request):
+    if request.is_ajax():
+        pk = request.POST['pk']
+        data = int(request.POST['data'])
+        end_data = data+10
+        curr_obj = Comment.objects.filter(article__id=pk)[data:end_data]
+        qs = []
+        for obj in curr_obj:
+            item = {
+                'author': obj.author.username,
+                'isi': obj.isi,
+            }
+            qs.append(item)
+        len_data = len(get_list_or_404(Comment, article__id=pk))
+        print(len(get_list_or_404(Comment, article__id=pk)))
+        return JsonResponse({'data': qs, 'end_data': end_data, 'len_data': len_data})
+    return JsonResponse({})
+
+
+@login_required
+def comment_ajax_view(request):
+    if request.is_ajax():
+        pk = request.POST['pk']
+        data = request.POST['data']
+        Comment.objects.create(article=get_object_or_404(
+            Article, id=pk), author=request.user, isi=data)
+        curr_obj = Comment.objects.filter(article__id=pk).last()
+        qs = [{
+            'author': curr_obj.author.username,
+            'isi': curr_obj.isi
+        }]
+
+    return JsonResponse({'data': qs})
+
+
 @login_required
 def likes_ajax_view(request):
     if request.is_ajax():
-        data = request.POST['data']
-        pk = data
+        pk = request.POST['data']
+
         obj = get_object_or_404(Article, id=pk)
-        print(obj.category.first().slug)
         liked = False
         if request.user in obj.likes.all():
             obj.likes.remove(request.user)
         else:
             obj.likes.add(request.user)
             liked = True
-        print(obj.num_likes)
         data = [{
             'num_likes': obj.num_likes,
             'liked': liked
         }]
         return JsonResponse({'data': data})
-
-
-@login_required
-def likes_view(request, *args, **kwargs):
-    obj = get_object_or_404(Article, id=kwargs['pk'])
-    print(obj.category.first().slug)
-    if request.user in obj.likes.all():
-        obj.likes.remove(request.user)
-    else:
-        obj.likes.add(request.user)
-    return HttpResponseRedirect(reverse('detail', kwargs={'slug': obj.category.first().slug, 'pk': kwargs['pk']}))
 
 
 @login_required(login_url='account_login')
@@ -252,23 +274,26 @@ class ArticleCategoryListView(ListView):
 class ArticleDetailView(DetailView):
     model = Article
     template_name = 'article_detail.html'
-    extra_context = {'categories': Category.objects.all()}
 
     def get_context_data(self, **kwargs):
-        self.extra_context['curr_category'] = Category.objects.get(
-            slug=self.kwargs['category'])
-        self.extra_context['same_articles'] = Article.objects.filter(
-            category__slug=self.kwargs['category']).exclude(Q(id=self.kwargs['pk']) | Q(published=False)).order_by('-updated')[:5]
+        self.extra_context = {
+            'categories': Category.objects.all(),
+            'curr_category': Category.objects.get(
+                slug=self.kwargs['category']),
+            'same_articles': Article.objects.filter(
+                category__slug=self.kwargs['category']).exclude(Q(id=self.kwargs['pk']) | Q(published=False)).order_by('-updated')[:5],
+            'comments': Comment.objects.filter(article__id=self.kwargs['pk'])[:10]
+        }
         self.kwargs.update(self.extra_context)
         return super().get_context_data()
 
 
-@method_decorator(login_required, name='dispatch')
+@ method_decorator(login_required, name='dispatch')
 class ArticleDetailAuthView(ArticleDetailView):
     pass
 
 
-@method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
+@ method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
 class ArticleCreateView(GetFormClassMixin, CreateView):
     template_name = "article_edit.html"
     extra_context = {
@@ -276,7 +301,7 @@ class ArticleCreateView(GetFormClassMixin, CreateView):
     }
 
 
-@method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
+@ method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
 class ArticleUpdateView(GetQuerysetMixin, GetFormClassMixin, UpdateView):
     template_name = "article_edit.html"
     extra_context = {
@@ -291,7 +316,7 @@ class ArticleUpdateView(GetQuerysetMixin, GetFormClassMixin, UpdateView):
         return url
 
 
-@method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
+@ method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
 class ArticleDeleteView(GetQuerysetMixin, DeleteView):
     template_name = "delete_view.html"
     success_url = reverse_lazy('adminList')

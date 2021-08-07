@@ -67,7 +67,7 @@ class Comment(models.Model):
     """Model definition for Comment."""
 
     article = models.ForeignKey(
-        Article, on_delete=models.CASCADE, related_name='comments')
+        Article, on_delete=models.CASCADE, related_name='article_comments')
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     isi = models.TextField()
 

@@ -1,12 +1,16 @@
 
 <script>
     const textaAlert=document.getElementsByClassName('alert-error')[0]
-    const formError=JSON.parse('{{form.errors.as_json}}'.replace(/&quot;/g,'"'))
-    const arrFormErr=Object.values(formError)
-    for (let i = 0; i < arrFormErr.length; i++) {
-        for (let i2 = 0; i2 < arrFormErr[i].length; i2++){
-        textaAlert.innerHTML+=`<br/>${arrFormErr[i][i2]['message']}`
-        textaAlert.parentElement.classList.remove('d-none')
+    const jsonData='{{form.errors.as_json}}'
+    if(jsonData!=''){
+        const formError=JSON.parse(jsonData.replace(/&quot;/g,'"'))
+        const arrFormErr=Object.values(formError)
+        for (let i = 0; i < arrFormErr.length; i++) {
+            for (let i2 = 0; i2 < arrFormErr[i].length; i2++){
+            textaAlert.innerHTML+=`<br/>${arrFormErr[i][i2]['message']}`
+            textaAlert.parentElement.classList.remove('d-none')
+            }
         }
+        
     }
 </script>

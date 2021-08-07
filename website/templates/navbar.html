@@ -48,8 +48,8 @@
               
             <form class="d-flex" action="{% url 'searchView' %}" method="POST">
               {% csrf_token %}
-              <input class="form-control me-2" type="input" placeholder="Cari..." aria-label="Search" name="searched">
-              <button class="btn btn-outline-success text-capitalize" type="submit">cari</button>
+              <input class="form-control me-2 rounded-pill" type="input" placeholder="Cari..." aria-label="Search" name="searched">
+              <button class="btn btn-outline-success text-capitalize rounded-pill" type="submit">cari</button>
             </form>
         </div>
       </div>

@@ -55,7 +55,7 @@ INSTALLED_APPS = [
 ]
 CKEDITOR_CONFIGS = {
     'default': {
-        'toolbar': 'full',
+        'toolbar': 'standard',
         'height': 300,
         'width': '100%',
     },

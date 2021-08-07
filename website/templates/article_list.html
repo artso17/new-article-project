@@ -45,7 +45,7 @@
                     <strong class="d-inline-block mb-2 text-primary text-uppercase">{{category.name}}</strong>
                   {% endif %}
                 {% endfor %}
-                <h3 class="mb-0">{{article.judul|title}}</h3>
+                <h5 class="mb-0">{{article.judul|title}}</h5>
                 <div class="mb-1 text-muted">{{article.updated}}</div>
                 <p class="card-text mb-auto">{{article.isi|safe|truncatewords:10}}</p>
                 {% for category in article.category.all %}
@@ -77,7 +77,7 @@
                 <div class="row g-0  border rounded overflow-hidden flex-md-row shadow-sm h-md-250 position-relative">
                   <div class="col p-4 d-flex flex-column position-static">
                     <strong class="d-inline-block mb-2 text-primary text-uppercase">{{article.category.all|first}}</strong>
-                    <h3 class="mb-0">{{article.judul|title}}</h3>
+                    <h5 class="mb-0">{{article.judul|title| truncatewords:10}}</h5>
                     <div class="mb-1 text-muted">{{article.updated}} <strong>likes: </strong>{{ article.num_likes }}</div>
                     <p class="card-text mb-auto">{{article.isi|safe|truncatewords:10}}</p>
                     <a href="{% url 'detail' article.slug article.id article.category.all|first|slugify %}" class="stretched-link">Continue reading</a>

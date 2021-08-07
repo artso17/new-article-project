@@ -6,25 +6,29 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% block meta_desc %}
-    <meta name="description" content="ini adalah isisnya">
+      <meta name="description" content="Artsolog berisi artikel-artikel yang berkaitan dunia teknologi khususnya dunia programing di Indonesia ">
     {% endblock  %}
     
       
     <!-- Bootstrap CSS -->
     <link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    {% block style %}{% endblock style %}
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>
-        {% block title %}
-    
-        {% endblock title %}
+        {% block title %}{% endblock title %}
     </title>
   </head>
   <body style="background-color: #00b4d81c;">
+    <div class="loading-background">
+      <div class="loader" >Loading...</div>
+    </div>
+    
       {% block content %}
           blockname
       {% endblock content %}
-
     <script src="{% static 'js/bootstrap/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/script.js' %}" defer></script>
     {% block script %}{% endblock script %}

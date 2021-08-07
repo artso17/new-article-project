@@ -19,8 +19,11 @@
     </form>
 
     <script>
-        if(document.getElementById('id_author')!=null) return document.getElementById('id_author').value={{request.user.id}};
-
+        if(document.getElementById('id_author')!=null){
+            document.getElementById('id_author').value=1
+        }
+        
+        console.log(document.getElementById('id_author'))
     </script>
 </main>
     

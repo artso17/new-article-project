@@ -10,3 +10,4 @@ class Readonly(admin.ModelAdmin):
 
 admin.site.register(Article)
 admin.site.register(Category, Readonly)
+admin.site.register(Comment)

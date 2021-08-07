@@ -11,6 +11,11 @@
 {% endblock  %}
     
 
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/article_detail_style.css' %}">
+{% endblock style %}
+    
+
 {% block content_extra %}
     <div class="row" style="padding-top: 100px;">
         <div class="col-lg-7">
@@ -19,10 +24,9 @@
                     <div class="thumbnail-box bg-primary">
                         <center>
                             <img src="{{  object.image.url  }}" alt="Thumbnail " srcset="">
-        
                         </center>
                     </div>
-                    <h2 class="">{{ object.judul|title }}</h2>
+                    <h2 class="title">{{ object.judul|title }}</h2>
                     <h6 class="text-capitalize">oleh : <span class="text-muted">{{object.author.first_name}} {{object.author.last_name}}</span></h6>
                     <h6 class="text-capitalize">kategori : <span class="text-muted text-uppercase"><span class="text-primary">{{curr_category.name}}</span> | 
                     {% for category in object.category.all %}
@@ -35,35 +39,85 @@
                     <h6 class="text-capitalize"><span class="text-muted">{{object.updated}}</span></h6>
                 </div>
             </header>
-            <article class="p-4" style="text-justify: inter-word;text-align:justify;text-indent:3em;">
-                {{object.isi|safe}}
-                <div class="row">
-                    <div class="col-3">
-
-                        <p class="num-likes text-capitalize"><strong>likes:</strong>  {{object.num_likes}}</p>
-                    </div>
-                    <div class="col-4">
-                        
+            
+            <article class="p-4" >
+                <article role="document" style="text-justify: inter-word;text-align:justify;text-indent:3em;">
+                    {{object.isi|safe}}
+                </article>
+                <nav class=" d-flex justify-content-between user-action" >
+                    <ul class="list-group list-group-horizontal text-capitalize pb-3">
+                        <li class="list-group-item pb-0 m-0"><p class="num-likes "><strong>likes:</strong>  {{object.num_likes}}</p></li>
                         {% if request.user.is_authenticated %}
                             {% if request.user in object.likes.all %}
-                                <button type="button" class="btn btn-secondary py-0" value="{{ object.id }}">unlike</button>
+                                <li class="list-group-item position-relative like" name='like' value="{{ object.id }}">
+                                    <img src="{% static 'img/icon/hand-thumbs-up-fill.svg' %}" height="20px" alt="Like Button">
+                                </li>
                             {% else %}
-                                <button type="button" class="btn btn-outline-primary py-0" value="{{ object.id }}">like</button>
+                                <li class="list-group-item position-relative like"  name='like' value="{{ object.id }}">
+                                    <img src="{% static 'img/icon/hand-thumbs-up.svg' %}" height="20px" alt="Unlike Button">
+                                </li>
                             {% endif %}
                         {% else %}
-                                <a href="{% url 'detailAuth' object.id curr_category.slug %}">Login to action</a>
+                            <li class="list-group-item"><a href="{% url 'detailAuth' object.slug object.id curr_category.slug %}">Login untuk menyukai</a></li>
                         {% endif %}
-                            
-                            
-                    </div>
+                    </ul>
+                    <ul class="list-group list-group-horizontal text-capitalize pb-3" >
+                        <li class="list-group-item "><a class="nav-link social-share" target="_blank" name="facebook_share" href="#"><img src="{% static 'img/icon/facebook.svg' %}" alt="Share Facebook" class="facebook-icon" height="30px"></a></li>
+                        <li class="list-group-item "><a class="nav-link social-share" target="_blank" name="linkedin_share" href="#"><img src="{% static 'img/icon/linkedin.svg' %}" alt="Share Linkedin" class="linkedin-icon" height="30px"></a></li>
+                        <li class="list-group-item "><a class="nav-link social-share" target="_blank" name="whatsapp_share" href="https://api.whatsapp.com/send?text={{object.judul|urlencode}} {{ request.build_absolute_uri|urlencode }}"><img src="{% static 'img/icon/whatsapp.svg' %}" alt="Share Whatsapp" class="whatsapp-icon" height="30px"></a></li>
+                    </ul>
 
-                </div>
+                </nav>
+                <blockquote class="border border-1 p-3" >
+                    <p><strong>Semua Komentar</strong></p>
+                    <hr>
+                    <div class="comment-container">
+                        {% for comment in comments %}
+                        <section class="comment-section">
+                            <p>Dari: <strong>{{comment.author}}</strong></p>
+                            <p>{{comment.isi|safe}}</p>
+                            <hr>
+                        </section>
+                        {% endfor %}
+                    </div>
+                    <div class="row">
+
+                        <div class="d-grid col-sm-5 pb-3 d-none">
+                            <button type="button" class="btn btn-primary p-0 btn-show-less  rounded-pill" name="show_less" value="10">Tampilkan lebih sedikit</button>
+                        </div>
+                        
+                        {% if comments|length > 9 %}
+                            <div class="d-grid col-sm-5 pb-3">
+                                <button type="button" class="btn btn-primary p-0 btn-show-more rounded-pill" name="show_more" value="10">Tampilkan lebih banyak</button>
+                            </div>
+                        
+                        {% endif %}
+
+                    </div>
+                    
+                    {% if request.user.is_authenticated %}
+                        <form class="row align-items-end g-3">
+                            <div class="col">
+                                <textarea class="form-control "  name="comment" id="comment" placeholder="Tambah Komentar" required></textarea>
+                            </div>
+                            <div class="col-sm-3 ">
+                                <div class="d-grid">
+                                    <button type="button"  class="btn btn-success rounded-pill" name="comment_btn"> Kirim</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    {% else %}
+                        <a href="{% url 'detailAuth' object.slug object.id curr_category.slug %}">Login untuk mulai komentar</a>
+                    {% endif %}
+                        
+                </blockquote>
             </article>
             
         </div>
         <section class="category-section col-lg-4 me-auto " style="right: 0;">
             <main class="position-sticky" style="top:100px;">
-                <header style="">
+                <header>
                     <div class="header-container  container p-4">
                         <h4 class="text-capitalize">Artikel serupa</h4>
                         <hr>
@@ -91,6 +145,6 @@
 
 
 {% block script %}
-<script type="module" src="{% static 'js/article_detail.js' %}"></script>
+<script type="module" src="{% static 'js/article_detail.js' %}" defer></script>
 {% endblock  %}
     

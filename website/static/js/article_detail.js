@@ -1,47 +1,31 @@
-const btn =document.getElementsByClassName('btn')[1]
+const pk=window.location.pathname.split("/")[3]
+const btn =document.getElementsByClassName('btn')
+const likeBtn=document.getElementsByClassName('like')
 const csrf=document.getElementsByName('csrfmiddlewaretoken')[0].value
 const numLikes=document.getElementsByClassName('num-likes')[0]
 const metaDesc=document.getElementsByName('description')[0]
 const articleIsi=document.getElementsByTagName('article')[0].firstElementChild.innerHTML
-console.log(articleIsi)
+const commentInput=document.getElementById('comment')
+const commentCont=document.getElementsByClassName('comment-container')[0]
+const socialShare=document.getElementsByClassName('social-share')
+const posttitle= encodeURIComponent('Halo semua! Ingin tahu blog menarik? Cek selengkapnya di Artsoblog: ')
+const postUrl=encodeURIComponent(window.location.href)
+// console.log(title)
+import * as modul from './module.js'
 
-import {truncate} from './module.js'
-// console.log(truncate)
+// console.log(encodeURIComponent(posttitle))
+socialShare['facebook_share'].setAttribute('href',`https://www.facebook.com/sharer.php?u=${postUrl}`)
+socialShare['whatsapp_share'].setAttribute('href',`https://api.whatsapp.com/send?text=${posttitle} ${postUrl}`)
+socialShare['linkedin_share'].setAttribute('href',`https://www.linkedin.com/shareArticle?mini=true&url=${postUrl}&title=${posttitle}`)
+if (btn['show_more']!= undefined) btn['show_more'].addEventListener('click',e=>modul.showMoreComm(csrf,pk,e.target,commentCont,e.target.parentNode,btn['show_less'].parentNode))
 
-const sendData=(data)=>{
-    $.ajax(
-        {
-            type:'POST',
-            url:'/likes/',
-            data:{
-                'csrfmiddlewaretoken':csrf,
-                'data':data,
-    
-            },
-            success:(res)=>{
-                console.log(res.data[0]['liked']) 
-                numLikes.innerHTML=`${res.data[0]['num_likes']}`
-                if (res.data[0]['liked'] == false){
-                btn.innerHTML=`like`
-                btn.classList.add('btn-outline-primary')
-                btn.classList.remove('btn-secondary')
-                }else{
-                btn.innerHTML=`unlike`
-                btn.classList.add('btn-secondary')
-                btn.classList.remove('btn-outline-primary')
-                }
-            },
-            error:(err)=>{
-            console.log(err)
-            }
-    
-        }
-    )
-        
-}
-
-btn.addEventListener('click',e=>{
-    sendData(e.value)
+btn['show_less'].addEventListener('click',e=>{
+    const commentContain=document.getElementsByClassName('comment-container')[0]
+    const btn =document.getElementsByClassName('btn')
+    modul.showLessComm(commentContain,btn['show_more'],e.target)
 })
 
-metaDesc['content']=truncate(articleIsi,100)
+if (likeBtn['like']!=undefined) likeBtn['like'].addEventListener('click',()=>modul.sendData(likeBtn['like'],csrf,numLikes))
+
+btn['comment_btn'].addEventListener('click',()=>modul.sendComment(commentInput,pk,csrf,commentCont))
+metaDesc['content']=modul.truncate(articleIsi,100)
