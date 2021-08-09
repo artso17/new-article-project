@@ -3,9 +3,10 @@ li.like {
 }
 
 @media (max-width: 992px) {
-  article article img {
+  article article img,
+  div.thumbnail-box img {
     height: auto !important;
-    width: 90% !important;
+    width: 70% !important;
   }
 }
 

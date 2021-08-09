@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,EAAE,AAAA,KAAK,CAAC;EACJ,MAAM,EAAE,OAAO;CAClB;;AAGD,MAAM,EAAE,SAAS,EAAE,KAAK;EAEpB,AAAA,OAAO,CAAC,OAAO,CAAC,GAAG,CAAC;IAChB,MAAM,EAAE,eAAe;IACvB,KAAK,EAAE,cAAc;GACxB;;;AAML,MAAM,EAAE,SAAS,EAAE,KAAK;EACpB,AAAA,YAAY,CAAC;IACT,cAAc,EAAE,iBAAiB;GACpC",
+    "sources": [
+        "article_detail_style.3658b9044c00.scss"
+    ],
+    "names": [],
+    "file": "article_detail_style.3658b9044c00.css"
+}
