@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', cast=bool)
+DEBUG = config('DEBUG', default=True, cast=bool)
 print(DEBUG)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
@@ -108,7 +108,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-SITE_ID = config('SITE_ID', cast=int)
+SITE_ID = config('SITE_ID', default=1, cast=int)
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -191,36 +191,36 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 
 # email
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_PORT = config('EMAIL_PORT', cast=int)
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD',)
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
-EMAIL_USE_SSL = config('EMAIL_USE_SSL', cast=bool)
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = config('EMAIL_HOST')
+# EMAIL_PORT = config('EMAIL_PORT', cast=int)
+# EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD',)
+# EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+# EMAIL_USE_SSL = config('EMAIL_USE_SSL', cast=bool)
 
 # http settings
-SESSION_COOKIE_SECURE = config(
-    'SESSION_COOKIE_SECURE', cast=bool)
-CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', cast=bool)
-SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', cast=bool)
+# SESSION_COOKIE_SECURE = config(
+#     'SESSION_COOKIE_SECURE', default=False, cast=bool)
+# CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
+# SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
 
 
 # hsts settings
-SECURE_HSTS_INCLUDE_SUBDOMAINS = config(
-    'SECURE_HSTS_INCLUDE_SUBDOMAINS', cast=bool)
-SECURE_HSTS_PRELOAD = config('SECURE_HSTS_PRELOAD', cast=bool)
-SECURE_HSTS_SECONDS = config('SECURE_HSTS_SECONDS', cast=int)
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = config(
+#     'SECURE_HSTS_INCLUDE_SUBDOMAINS', default=False, cast=bool)
+# SECURE_HSTS_PRELOAD = config('SECURE_HSTS_PRELOAD', default=False, cast=bool)
+# SECURE_HSTS_SECONDS = config('SECURE_HSTS_SECONDS', default=False, cast=int)
 print(ALLOWED_HOSTS)
 
 # secure policy
-SECURE_REFERRER_POLICY = config('SECURE_REFERRER_POLICY')
+# SECURE_REFERRER_POLICY = config('SECURE_REFERRER_POLICY')
 
 
 # account settings
-LOGIN_REDIRECT_URL = '/admin-list/'
-ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "optional"
-ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
-ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
+# LOGIN_REDIRECT_URL = '/admin-list/'
+# ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_EMAIL_VERIFICATION = "optional"
+# ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+# ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
