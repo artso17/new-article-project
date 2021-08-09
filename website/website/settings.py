@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from django.urls import reverse
 from pathlib import Path
 from decouple import config, Csv
-from dj_database_url import parse as db_url
+import dj_database_url
+# from dj_database_url import parse as db_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -123,14 +124,15 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 # DATABASE_URL=mysql://myuser:mypassword@myhost/mydatabase
-DATABASES = {
-    'default': config(
-        'DATABASE_URL',
-        default='sqlite:///' + str(BASE_DIR/'db.sqlite3'),
-        cast=db_url
-    )
-}
-
+# DATABASES = {
+#     'default': config(
+#         'DATABASE_URL',
+#         default='sqlite:///' + str(BASE_DIR/'db.sqlite3'),
+#         cast=db_url
+#     )
+# }
+DATABASES['default'] = dj_database_url.config(
+    conn_max_age=600, ssl_require=True, default='sqlite:///' + str(BASE_DIR/'db.sqlite3'))
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
