@@ -42,14 +42,7 @@ class Article(models.Model):
     slug = models.SlugField(blank=True, editable=False)
 
     def save(self):
-        super().save()
         self.slug = slugify(self.judul)
-        img = Image.open(self.image.path)
-
-        if img.height > 600 or img.width > 600:
-            output_size = (600, 600)
-            img.thumbnail(output_size)
-            img.save(self.image.path, optimize=True, quality=30)
         return super().save()
 
     def get_absolute_url(self):
