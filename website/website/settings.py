@@ -131,9 +131,17 @@ DATABASES = {
         cast=db_url
     )
 }
-# DATABASES['default'] = dj_database_url.config(
-#     conn_max_age=600, ssl_require=True, default='sqlite:///' + str(BASE_DIR/'db.sqlite3'))
-
+if not DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': config('db_name'),
+            'USER': config('db_user'),
+            'PASSWORD': config('db_password'),
+            'HOST': config('db_host'),
+            # 'PORT':'3306',
+        }
+    }
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
