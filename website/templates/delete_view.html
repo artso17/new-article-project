@@ -3,6 +3,7 @@
 
 {% block content_extra %}
 <section style="padding-top:100px">
+    <h3>Anda yakin ingin menghapus {{object.id}} | {{object}}? </h3>
     <form method="POST">
         {% csrf_token %}
         <button type="submit">ya</button>

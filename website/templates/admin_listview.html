@@ -89,7 +89,7 @@
                     <tr>
                         <th scope="row">{{forloop.counter}}</th>
                         <td>{{category.name|truncatewords:5}}</td>
-                        <td><a class="btn btn-danger text-capitalize" href="#" role="button">delete</a> | <a class="btn btn-warning text-capitalize" href="{% url 'update' 'category' category.id %}" role="button">updated</a></td>
+                        <td><a class="btn btn-danger text-capitalize" href="{% url 'delete' 'category' category.id %}" role="button">delete</a> | <a class="btn btn-warning text-capitalize" href="{% url 'update' 'category' category.id %}" role="button">updated</a></td>
                     </tr>
                 {% endfor %}
                     
@@ -141,7 +141,7 @@
                             {% endfor %}
                                 
                         </td>
-                        <td><a class="btn btn-danger text-capitalize" href="#" role="button">delete</a> | <a class="btn btn-warning text-capitalize" href="{% url 'update' 'user' user.id %}" role="button">updated</a></td>
+                        <td><a class="btn btn-danger text-capitalize" href="{% url 'delete' 'user' user.id %}" role="button">delete</a> | <a class="btn btn-warning text-capitalize" href="{% url 'update' 'user' user.id %}" role="button">updated</a></td>
                     </tr>
                 {% endfor %}
                     
@@ -173,7 +173,7 @@
                     <tr>
                         <th scope="row">{{forloop.counter}}</th>
                         <td>{{group.name}}</td>
-                        <td><a class="btn btn-danger text-capitalize" href="#" role="button">delete</a> | <a class="btn btn-warning text-capitalize" href="{% url 'update' 'group' group.id %}" role="button">updated</a></td>
+                        <td><a class="btn btn-danger text-capitalize" href="{% url 'delete' 'group' group.id %}" role="button">delete</a> | <a class="btn btn-warning text-capitalize" href="{% url 'update' 'group' group.id %}" role="button">updated</a></td>
                     </tr>
                 {% endfor %}
                     
