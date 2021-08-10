@@ -4,10 +4,10 @@
 {% block title %}
   
   {% if curr_page %}
-    {{curr_page|upper}} | Artsolog
+    {{curr_page|upper}} | Artsodevalog
     
   {% else %}
-    Artsodevalog
+    Artsolog
   {% endif %}
     
   {% endblock title %}
@@ -104,15 +104,9 @@
     </article>
     
   {% else %}
-  <header style="padding-top: 100px;">
-    <div class="header-container reverse-column container p-4 row">
-        <center>
-          <h2>Oops...We couldn't find anything</h2>
-        </center>
-        
-        </div>
-    </div>
-</header>
+  <center>
+    <h2 style="padding-top: 150px;">Ooops....We couldn't find anything</h2>
+  </center> 
   {% endif %}
 
 {% endblock content_extra %}
