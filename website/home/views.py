@@ -245,6 +245,15 @@ class GetFormClassMixin:
         return form_class
 
 
+class GetAbsoluteUrlMixin:
+    def get_success_url(self):
+        if self.kwargs['model'] == 'user' or self.kwargs['model'] == 'group' or self.kwargs['model'] == 'category':
+            url = reverse('adminList')
+        elif self.kwargs['model'] == 'article':
+            url = self.object.get_absolute_url()
+        return url
+
+
 class ArticleListView(ListView):
     queryset = Article.objects.all().exclude(
         published=False).order_by('-updated')[:20]
@@ -294,7 +303,7 @@ class ArticleDetailAuthView(ArticleDetailView):
 
 
 @ method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
-class ArticleCreateView(GetFormClassMixin, CreateView):
+class ArticleCreateView(GetFormClassMixin, GetAbsoluteUrlMixin, CreateView):
     template_name = "article_edit.html"
     extra_context = {
         'page_title': 'Buat Blog'
@@ -302,18 +311,11 @@ class ArticleCreateView(GetFormClassMixin, CreateView):
 
 
 @ method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
-class ArticleUpdateView(GetQuerysetMixin, GetFormClassMixin, UpdateView):
+class ArticleUpdateView(GetQuerysetMixin, GetFormClassMixin, GetAbsoluteUrlMixin, UpdateView):
     template_name = "article_edit.html"
     extra_context = {
         'page_title': 'Update Blog'
     }
-
-    def get_success_url(self):
-        if self.kwargs['model'] == 'user' or self.kwargs['model'] == 'group' or self.kwargs['model'] == 'category':
-            url = reverse('adminList')
-        elif self.kwargs['model'] == 'article':
-            url = self.object.get_absolute_url()
-        return url
 
 
 @ method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
