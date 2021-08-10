@@ -140,6 +140,9 @@ if not DEBUG:
             'PASSWORD': config('db_password'),
             'HOST': config('db_host'),
             # 'PORT':'3306',
+            'OPTIONS': {
+                'sql_mode': 'STRICT_TRANS_TABLES',
+            },
         }
     }
 # Password validation
