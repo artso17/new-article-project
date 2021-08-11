@@ -35,8 +35,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
-
-
+    'django_unused_media',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'home.apps.HomeConfig',
-
+    'django_cleanup',
 
 
 
@@ -57,6 +56,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+
 ]
 CKEDITOR_CONFIGS = {
     'default': {

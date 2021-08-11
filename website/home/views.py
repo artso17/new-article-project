@@ -1,3 +1,4 @@
+from django_cleanup.signals import cleanup_pre_delete
 import json
 from .forms import *
 from .models import *
