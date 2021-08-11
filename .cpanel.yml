@@ -3,7 +3,7 @@ deployment:
     - export DEPLOYPATH=/home/artsodev/blog-django/
     - /bin/cp -R website/home $DEPLOYPATH
     - /bin/cp -R website/static_root $DEPLOYPATH
-    # - /bin/cp -R website/static $DEPLOYPATH
+    - /bin/cp -R website/static $DEPLOYPATH
     - /bin/cp -R website/templates $DEPLOYPATH
     - /bin/cp -R website/website $DEPLOYPATH
     - /bin/cp requirements.txt $DEPLOYPATH
