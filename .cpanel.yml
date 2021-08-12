@@ -7,4 +7,4 @@ deployment:
     - /bin/cp -R website/templates $DEPLOYPATH
     - /bin/cp -R website/website $DEPLOYPATH
     - /bin/cp requirements.txt $DEPLOYPATH
-    - /bin/cp website/website manage.py $DEPLOYPATH
+    - /bin/cp website/ manage.py $DEPLOYPATH
