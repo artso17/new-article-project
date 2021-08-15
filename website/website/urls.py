@@ -21,6 +21,9 @@ from django.views.static import serve
 from home.views import *
 
 urlpatterns = [
+    path("activation/<uidb64>/<token>", activation_email_view, name="activate"),
+    path("register/", create_user_view, name="register"),
+    path("login/", LoginUserView.as_view(), name="login"),
     path('show-comment/', show_more_comments_view, name='showCommAjax'),
     path('add-comment/', comment_ajax_view, name='commentAjax'),
     path('likes/', likes_ajax_view, name='likesAjax'),

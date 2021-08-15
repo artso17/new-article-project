@@ -1,13 +1,15 @@
+
 {% extends 'base.html' %}
 
 {% load i18n %}
 {% load account socialaccount %}
 
 {% block title %}
-  {% trans "Log in" %}
+  Log in
 {% endblock %}
 
 {% block content %}
+
 <div class="container col-sm-5 position-relative" >
   <div class="row align-items-center " style='height:100vh;'>
     {% for message in messages %}
@@ -31,10 +33,10 @@
       </div>
       <!-- akhir form error -->
       
-      <form action="{% url 'account_login' %}" method="post">
+      <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
-        <input type="text" class="form-control mb-3 rounded-pill" name="login" placeholder="Username" autocomplete="username" maxlength="150">
-        <input type="password" class="form-control mb-3 rounded-pill" name="password" placeholder="Password" autocomplete="current-password">
+        <input type="text" class="form-control mb-3 rounded-pill" name="{{form.username.html_name}}" placeholder="Username" autocomplete="username" maxlength="150">
+        <input type="password" class="form-control mb-3 rounded-pill" name="{{form.password.html_name}}" placeholder="Password" autocomplete="current-password">
         <label for="id_remember">Remember Me:</label> 
         <input type="checkbox" class="form-check-input mb-3" name="remember" id="id_remember">
 
@@ -42,7 +44,7 @@
           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
         <div class="d-grid gap-2 mb-2">
-          <button class="btn btn-primary text-capitalize rounded-pill" type="submit">login</button>
+          <button class="btn btn-primary text-capitalize rounded-pill" type="submit">log in</button>
         </div>
       </form>
       <div class="d-grid gap-2 mb-2">
@@ -54,7 +56,7 @@
           
         </div>
         <div class="col text-end">
-          <a href="{% url 'register' %}">Don't have an account?</a>
+          <a href="{{ signup_url }}">Don't have an account?</a>
         </div>
       </div>
     </section>

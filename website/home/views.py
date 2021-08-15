@@ -2,18 +2,86 @@ from django_cleanup.signals import cleanup_pre_delete
 import json
 from .forms import *
 from .models import *
-from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.list import MultipleObjectMixin
 from django.db.models import Q
 from django.contrib.auth.models import User, Group
+from django.contrib.auth.views import LoginView
+from django.contrib.auth import login
 from django.urls import reverse, reverse_lazy
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-from .decorators import allowed_hosts
+from .decorators import *
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_text
+from django.core.mail import EmailMessage
+from .utils import TokenGenerator
+from django.conf import settings
+from django.contrib import messages
+
+
+def activate_email(request, user):
+    current_site = get_current_site(request)
+    email_subject = 'Activate your account.'
+    email_body = render_to_string('register/activation_email.html', {
+        'user': user,
+        'domain': current_site,
+        'uid64': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': TokenGenerator().make_token(user),
+    })
+
+    email = EmailMessage(subject=email_subject, body=email_body,
+                         from_email=settings.EMAIL_FROM_USER, to=[user.email])
+    email.send()
+    return redirect(reverse('account_login'))
+
+
+@unauthenticate_user
+def create_user_view(request):
+    form = RegisterForm(request.POST or None)
+    if form.is_valid():
+        username = form.cleaned_data.get('username')
+        password1 = form.cleaned_data.get('password1')
+        password2 = form.cleaned_data.get('password2')
+        first_name = form.cleaned_data.get('first_name')
+        last_name = form.cleaned_data.get('last_name')
+        email = form.cleaned_data.get('email')
+        print(password1 == password2, 'matched')
+        if password1 == password2:
+            user = User.objects.create_user(
+                username=username, password=password1, email=email, first_name=first_name, last_name=last_name, is_active=False)
+            activate_email(request, user)
+            return render(request, 'account/verification_sent.html', {})
+    # print(qs)
+    return render(request, 'register.html', {'form': form})
+
+
+@unauthenticate_user
+def activation_email_view(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = get_object_or_404(User, id=uid)
+    except Exception:
+        user = None
+
+    if user and TokenGenerator().check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.add_message(request, messages.SUCCESS,
+                             "you're email is verified")
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        return redirect('/')
+    return render(request, 'register/token_invalid.html')
+
+
+class LoginUserView(LoginView):
+    template_name = 'login_user.html'
 
 
 def show_more_comments_view(request):

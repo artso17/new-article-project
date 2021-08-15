@@ -3,6 +3,14 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse, reverse_lazy
 
 
+def unauthenticate_user(view_func):
+    def wrapper_func(request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('/')
+        return view_func(request, *args, **kwargs)
+    return wrapper_func
+
+
 def allowed_hosts(allowed_groups=[]):
     def decorator(view_func):
         def wrapper_func(request, *args, **kwargs):

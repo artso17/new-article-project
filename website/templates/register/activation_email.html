@@ -1,0 +1,13 @@
+
+{% autoescape off %}
+    
+Hi {{user.username}}
+
+Please verify your email by clicking link below:
+
+http://{{domain}}{% url 'activate' uid64 token  %}
+
+if it is not you then ignore it
+
+
+{% endautoescape %}

@@ -19,7 +19,7 @@
     
         <section class="change-password-section bg-light col p-5 rounded-3" style="border: 3px solid grey;">
             <center>
-                <h1>{% trans "Verify Your E-mail Address" %}</h1>
+                <h1>{% trans "Invalid Link" %}</h1>
             </center>
             {% if user.is_authenticated %}
                 {% include "account/snippets/already_logged_in.html" %}
@@ -30,8 +30,10 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             <!-- akhir form error -->
-    
-            <p>{% blocktrans %}We have sent you an e-mail. Please contact us if you do not receive it within a few minutes.{% endblocktrans %}</p>
+            <center>
+                <p>{% blocktrans %}This link is invalid{% endblocktrans %}</p>
+
+            </center>
         </section>
     
         </div>
