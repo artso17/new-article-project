@@ -1,3 +1,5 @@
+from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
 from django_cleanup.signals import cleanup_pre_delete
 import json
 from .forms import *
@@ -48,17 +50,18 @@ def create_user_view(request):
     if form.is_valid():
         username = form.cleaned_data.get('username')
         password1 = form.cleaned_data.get('password1')
-        password2 = form.cleaned_data.get('password2')
         first_name = form.cleaned_data.get('first_name')
         last_name = form.cleaned_data.get('last_name')
         email = form.cleaned_data.get('email')
-        print(password1 == password2, 'matched')
-        if password1 == password2:
-            user = User.objects.create_user(
-                username=username, password=password1, email=email, first_name=first_name, last_name=last_name, is_active=False)
-            activate_email(request, user)
-            return render(request, 'account/verification_sent.html', {})
-    # print(qs)
+        user = User.objects.create_user(
+            username=username,
+            password=password1,
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            is_active=False)
+        activate_email(request, user)
+        return render(request, 'account/verification_sent.html', {})
     return render(request, 'register.html', {'form': form})
 
 

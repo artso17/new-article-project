@@ -14,15 +14,22 @@ class RegisterForm(forms.Form):
     password2 = forms.CharField(
         label='Confirm Password', widget=forms.PasswordInput())
 
-    # def clean_username(self):
-    #     username = self.cleaned_data.get("username")
-    #     print(username)
-    #     qs = User.objects.filter(username=username)
-    #     if qs.exists():
-    #         raise forms.ValidationError(
-    #             'The username is already Picked, please pick another.')
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError(
+                'E-mail is already exist, please pick another.')
+        return email
 
-    #     return username
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if ' ' in username:
+            raise forms.ValidationError('Username should not contains space.')
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError(
+                'Username is already invalid, please pick another.')
+
+        return username
 
     def clean_password1(self):
         lower = 'abcdefghijklmnopqrstu'
@@ -30,21 +37,21 @@ class RegisterForm(forms.Form):
         password1 = self.cleaned_data.get("password1")
         ucase = 0
         lcase = 0
-        # for i in password1:
-        #     if i in upper:
-        #         ucase += 1
-        #     elif i in lower:
-        #         lcase += 1
-        # if ucase == 0 or lcase == 0:
-        #     raise forms.ValidationError(
-        #         'The password should contain at least 1 uppercase and 1 lowercase')
+        for i in password1:
+            if i in upper:
+                ucase += 1
+            elif i in lower:
+                lcase += 1
+        if ucase == 0 or lcase == 0:
+            raise forms.ValidationError(
+                'Password should contain at least 1 uppercase and 1 lowercase.')
         return password1
 
-    def clean_password2(self):
-        password2 = self.cleaned_data.get("password2")
-        return password2
-
-    # def password_match(self):
+    def clean(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+        if password1 != password2:
+            raise forms.ValidationError('Passwords are not matched')
 
 
 class GroupForm(forms.ModelForm):
