@@ -36,7 +36,7 @@ class RegisterForm(PasswordValidation, forms.Form):
     first_name = forms.CharField(label='First Name')
     last_name = forms.CharField(label='Last Name')
     email = forms.EmailField(label='Email Address')
-    password = forms.CharField(
+    password1 = forms.CharField(
         label='New Password', widget=forms.PasswordInput())
     password2 = forms.CharField(
         label='Confirm Password', widget=forms.PasswordInput())
