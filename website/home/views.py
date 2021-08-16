@@ -1,3 +1,4 @@
+from django.contrib.auth.tokens import default_token_generator
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 from django_cleanup.signals import cleanup_pre_delete
@@ -5,11 +6,11 @@ import json
 from .forms import *
 from .models import *
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
 from django.views.generic.list import MultipleObjectMixin
 from django.db.models import Q
 from django.contrib.auth.models import User, Group
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.contrib.auth import login
 from django.urls import reverse, reverse_lazy
 from django.http import JsonResponse
@@ -26,6 +27,25 @@ from django.core.mail import EmailMessage
 from .utils import TokenGenerator
 from django.conf import settings
 from django.contrib import messages
+
+
+@unauthenticate_user
+def password_reset_user_confirm_view(request, uidb64, token):
+    context = {'page_title': 'Change Password'}
+    uid = force_text(urlsafe_base64_decode(uidb64))
+    user = get_object_or_404(User, id=uid)
+    if user and default_token_generator.check_token(user, token):
+        form = PasswordResetForm(request.POST or None)
+        context['form'] = form
+        if form.is_valid():
+            password1 = form.cleaned_data.get('password1')
+            user.set_password(password1)
+            user.save()
+            messages.add_message(request, messages.SUCCESS,
+                                 'Your Password is successfully changed.')
+            return redirect(reverse('account_login'))
+        return render(request, 'account/password_reset_change.html', context)
+    return render(request, 'register/token_invalid.html', context)
 
 
 def activate_email(request, user):
@@ -77,14 +97,10 @@ def activation_email_view(request, uidb64, token):
         user.is_active = True
         user.save()
         messages.add_message(request, messages.SUCCESS,
-                             "you're email is verified")
+                             "Your email is verified")
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         return redirect('/')
     return render(request, 'register/token_invalid.html')
-
-
-class LoginUserView(LoginView):
-    template_name = 'login_user.html'
 
 
 def show_more_comments_view(request):
@@ -367,6 +383,27 @@ class ArticleDetailView(DetailView):
         }
         self.kwargs.update(self.extra_context)
         return super().get_context_data()
+
+
+class PasswordResetUserComplete(PasswordResetCompleteView):
+    pass
+
+
+# class PasswordResetUserConfirm(PasswordResetConfirmView):
+#     template_name = 'account/password_reset_change.html'
+#     form_class = PasswordResetForm
+
+    # def form_invalid(self, form):
+    #     """If the form is invalid, render the invalid form."""
+    #     return self.render_to_response(self.get_context_data(form=form))
+
+
+class PasswordResetUserDone(PasswordResetDoneView):
+    template_name = 'account/password_reset_done.html'
+
+
+class PasswordResetUserView(PasswordResetView):
+    template_name = 'account/password_reset.html'
 
 
 @ method_decorator(login_required, name='dispatch')

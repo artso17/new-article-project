@@ -2,14 +2,41 @@ from django import forms
 from .models import *
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import get_user_model
+from django.forms import CharField, ModelForm
+from django.contrib.auth.forms import SetPasswordForm
 
 
-class RegisterForm(forms.Form):
+class PasswordValidation:
+
+    def clean_password1(self):
+        password1 = self.cleaned_data.get("password1")
+        lower = 'abcdefghijklmnopqrstu'
+        upper = lower.upper()
+        ucase = 0
+        lcase = 0
+        for i in password1:
+            if i in upper:
+                ucase += 1
+            elif i in lower:
+                lcase += 1
+        if ucase == 0 or lcase == 0:
+            raise forms.ValidationError(
+                'Password should contain at least 1 uppercase and 1 lowercase.')
+        return password1
+
+    def clean(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+        if password1 != password2:
+            raise forms.ValidationError('Passwords are not matched')
+
+
+class RegisterForm(PasswordValidation, forms.Form):
     username = forms.CharField()
     first_name = forms.CharField(label='First Name')
     last_name = forms.CharField(label='Last Name')
     email = forms.EmailField(label='Email Address')
-    password1 = forms.CharField(
+    password = forms.CharField(
         label='New Password', widget=forms.PasswordInput())
     password2 = forms.CharField(
         label='Confirm Password', widget=forms.PasswordInput())
@@ -30,28 +57,6 @@ class RegisterForm(forms.Form):
                 'Username is already invalid, please pick another.')
 
         return username
-
-    def clean_password1(self):
-        lower = 'abcdefghijklmnopqrstu'
-        upper = lower.upper()
-        password1 = self.cleaned_data.get("password1")
-        ucase = 0
-        lcase = 0
-        for i in password1:
-            if i in upper:
-                ucase += 1
-            elif i in lower:
-                lcase += 1
-        if ucase == 0 or lcase == 0:
-            raise forms.ValidationError(
-                'Password should contain at least 1 uppercase and 1 lowercase.')
-        return password1
-
-    def clean(self):
-        password1 = self.cleaned_data.get('password1')
-        password2 = self.cleaned_data.get('password2')
-        if password1 != password2:
-            raise forms.ValidationError('Passwords are not matched')
 
 
 class GroupForm(forms.ModelForm):
@@ -125,3 +130,30 @@ class ArticleForm(forms.ModelForm):
             'image': forms.FileInput(attrs={'class': 'form-control'}),
             'published': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
+
+
+class PasswordResetForm(PasswordValidation, forms.Form):
+    password1 = forms.CharField(
+        label='New Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label='Confirm New Password', widget=forms.PasswordInput)
+
+
+# class PasswordResetForm(SetPasswordForm):
+#     lower = 'abcdefghijklmnopqrstu'
+#     upper = lower.upper()
+#     ucase = 0
+#     lcase = 0
+
+#     def clean_new_password1(self):
+#         new_password1 = self.cleaned_data.get("new_password1")
+
+#         for i in new_password1:
+#             if i in upper:
+#                 ucase += 1
+#             elif i in lower:
+#                 lcase += 1
+#         if ucase == 0 or lcase == 0:
+#             raise forms.ValidationError(
+#                 'Password should contain at least 1 uppercase and 1 lowercase.')
+#         return new_password1
