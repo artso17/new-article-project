@@ -385,19 +385,6 @@ class ArticleDetailView(DetailView):
         return super().get_context_data()
 
 
-class PasswordResetUserComplete(PasswordResetCompleteView):
-    pass
-
-
-# class PasswordResetUserConfirm(PasswordResetConfirmView):
-#     template_name = 'account/password_reset_change.html'
-#     form_class = PasswordResetForm
-
-    # def form_invalid(self, form):
-    #     """If the form is invalid, render the invalid form."""
-    #     return self.render_to_response(self.get_context_data(form=form))
-
-
 class PasswordResetUserDone(PasswordResetDoneView):
     template_name = 'account/password_reset_done.html'
 

@@ -21,8 +21,6 @@ from django.views.static import serve
 from home.views import *
 
 urlpatterns = [
-    path("password-reset-complete/", PasswordResetUserComplete.as_view(),
-         name="password_reset_complete"),
     path("password-reset-confirm/<uidb64>/<token>", password_reset_user_confirm_view,
          name="password_reset_confirm"),
     path("password-reset-done/", PasswordResetUserDone.as_view(),
