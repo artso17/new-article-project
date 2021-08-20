@@ -1,6 +1,6 @@
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/artsodev/blog-django/
+    - export DEPLOYPATH=/home/artsodev/files-artsodevalog.tech/
     - /bin/cp -R website/home $DEPLOYPATH
     - /bin/cp -R website/static_root $DEPLOYPATH
     - /bin/cp -R website/static $DEPLOYPATH
