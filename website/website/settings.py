@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
-print(DEBUG)
+# print(DEBUG)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 
@@ -211,8 +211,8 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 EMAIL_USE_SSL = config('SETTINGS_TRUE', cast=bool)
-print(EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER,
-      EMAIL_HOST_PASSWORD, EMAIL_USE_SSL)
+# print(EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER,
+#       EMAIL_HOST_PASSWORD, EMAIL_USE_SSL)
 # http settings
 SESSION_COOKIE_SECURE = config(
     'SETTINGS_TRUE', cast=bool)
