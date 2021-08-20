@@ -11,7 +11,6 @@ const postUrl=encodeURIComponent(window.location.href)
 // console.log(posttitle)
 import * as modul from './module.js'
 
-// console.log(encodeURIComponent(posttitle))
 socialShare['facebook_share'].setAttribute('href',`https://www.facebook.com/sharer.php?u=${postUrl}`)
 socialShare['whatsapp_share'].setAttribute('href',`https://api.whatsapp.com/send?text=${posttitle} ${postUrl}`)
 socialShare['linkedin_share'].setAttribute('href',`https://www.linkedin.com/shareArticle?mini=true&url=${postUrl}&title=${posttitle}`)
