@@ -150,5 +150,14 @@
 
 {% block script %}
 <script type="module" src="{% static 'js/article_detail.js' %}" defer></script>
+<script>
+    const title=encodeURIComponent(document.getElementsByTagName('h2')[0].innerHTML)
+    const socialShare=document.getElementsByClassName('social-share')
+    const posttitle=encodeURIComponent(`${title} Ingin tahu kelanjutannya? Cek selengkapnya di Artsodevalog: `)
+    const postUrl=encodeURIComponent(window.location.href)
+    socialShare['facebook_share'].setAttribute('href',`https://www.facebook.com/sharer.php?u=${postUrl}`)
+    socialShare['whatsapp_share'].setAttribute('href',`https://api.whatsapp.com/send?text=${posttitle}${postUrl}`)
+    socialShare['linkedin_share'].setAttribute('href',`https://www.linkedin.com/shareArticle?mini=true&url=${postUrl}&title=${posttitle}`)
+</script>
 {% endblock  %}
     
