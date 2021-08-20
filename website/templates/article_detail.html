@@ -18,7 +18,7 @@
 
 {% block content_extra %}
     <div class="row" style="padding-top: 100px;">
-        <div class="col-lg-7">
+        <div class="col-lg-8">
             <header >
                 <div class="header-container  container p-4">
                     <div class="thumbnail-box bg-primary">
@@ -28,7 +28,7 @@
                     </div>
                     <h2 class="title">{{ object.judul|title }}</h2>
                     <h6 class="text-capitalize">oleh : <span class="text-muted">{{object.author.first_name}} {{object.author.last_name}}</span></h6>
-                    <h6 class="text-capitalize">kategori : <span class="text-muted text-uppercase"><span class="text-primary">{{curr_category.name}}</a></span> | 
+                    <h6 class="text-capitalize">kategori : <span class="text-muted text-uppercase"><span class="text-primary"><a href="{% url 'category' curr_category.slug %}" class="nav-link"></a>{{curr_category.name}}</a></span> | 
                     {% for category in object.category.all %}
                         {% if category != curr_category %}
                             <a href="{% url 'category' category.slug %}">{{category.name}}</a> |

@@ -219,8 +219,7 @@ SESSION_COOKIE_SECURE = config(
     'SETTINGS_TRUE', cast=bool)
 CSRF_COOKIE_SECURE = config('SETTINGS_TRUE',  cast=bool)
 SECURE_SSL_REDIRECT = config('SETTINGS_TRUE', cast=bool)
-SECURE_SSL_HOST = config('ALLOWED_HOSTS', cast=Csv())[1]
-
+SECURE_SSL_HOST = config('ALLOWED_HOSTS', cast=Csv())[0]
 
 # hsts settings
 SECURE_HSTS_INCLUDE_SUBDOMAINS = config(
