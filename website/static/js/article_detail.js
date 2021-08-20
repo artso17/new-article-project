@@ -3,8 +3,6 @@ const btn =document.getElementsByClassName('btn')
 const likeBtn=document.getElementsByClassName('like')
 const csrf=document.getElementsByName('csrfmiddlewaretoken')[0].value
 const numLikes=document.getElementsByClassName('num-likes')[0]
-// const metaDesc=document.getElementsByName('description')[0]
-// const articleIsi=document.getElementsByTagName('article')[0].firstElementChild.innerHTML
 const commentInput=document.getElementById('comment')
 const commentCont=document.getElementsByClassName('comment-container')[0]
 const socialShare=document.getElementsByClassName('social-share')
@@ -28,4 +26,3 @@ btn['show_less'].addEventListener('click',e=>{
 if (likeBtn['like']!=undefined) likeBtn['like'].addEventListener('click',()=>modul.sendData(likeBtn['like'],csrf,numLikes))
 
 if (btn['comment_btn'!=undefined]) btn['comment_btn'].addEventListener('click',()=>modul.sendComment(commentInput,pk,csrf,commentCont))
-// metaDesc['content']=modul.truncate(articleIsi,100)
