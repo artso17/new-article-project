@@ -132,7 +132,7 @@ DATABASES = {
         cast=db_url
     )
 }
-if not DEBUG:
+if ALLOWED_HOSTS[0]!='*':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -146,6 +146,7 @@ if not DEBUG:
             },
         }
     }
+# print(ALLOWED_HOSTS[0]=='*')
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
