@@ -8,7 +8,7 @@ const commentCont=document.getElementsByClassName('comment-container')[0]
 const socialShare=document.getElementsByClassName('social-share')
 const posttitle= encodeURIComponent(`"${document.getElementsByTagName('h2')[0].innerHTML}" Ingin tahu kelanjutannya? Cek selengkapnya di Artsodevalog: `)
 const postUrl=encodeURIComponent(window.location.href)
-// console.log(title)
+console.log(posttitle)
 import * as modul from './module.js'
 
 // console.log(encodeURIComponent(posttitle))
