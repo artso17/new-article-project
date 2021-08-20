@@ -46,7 +46,7 @@
                 {% endfor %}
                 <h5 class="mb-0">{{article.judul|title}}</h5>
                 <div class="mb-1 text-muted">{{article.updated}}</div>
-                <p class="card-text mb-auto">{{article.isi|safe|truncatewords:10}}</p>
+                <p class="card-text mb-auto">{{article.snippet|truncatewords:10}}</p>
                 {% for category in article.category.all %}
                   {% if category.slug == slug %}
                     <a href="{% url 'detail' article.slug article.id category.slug %}" class="stretched-link">Continue reading</a>
@@ -78,7 +78,7 @@
                     <strong class="d-inline-block mb-2 text-primary text-uppercase">{{article.category.all|first}}</strong>
                     <h5 class="mb-0">{{article.judul|title| truncatewords:10}}</h5>
                     <div class="mb-1 text-muted">{{article.updated}} <strong>likes: </strong>{{ article.num_likes }}</div>
-                    <p class="card-text mb-auto">{{article.isi|safe|truncatewords:10}}</p>
+                    <p class="card-text mb-auto">{{article.snippet|truncatewords:10}}</p>
                     <a href="{% url 'detail' article.slug article.id article.category.all|first|slugify %}" class="stretched-link">Continue reading</a>
                   </div>
                   {% if article.image %}
