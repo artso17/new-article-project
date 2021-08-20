@@ -210,20 +210,21 @@ EMAIL_PORT = config('EMAIL_PORT', cast=int)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
-EMAIL_USE_SSL = config('EMAIL_USE_SSL', cast=bool)
+EMAIL_USE_SSL = config('SETTINGS_TRUE', cast=bool)
 print(EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER,
       EMAIL_HOST_PASSWORD, EMAIL_USE_SSL)
 # http settings
 SESSION_COOKIE_SECURE = config(
-    'SESSION_COOKIE_SECURE', cast=bool)
-CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE',  cast=bool)
-SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', cast=bool)
+    'SETTINGS_TRUE', cast=bool)
+CSRF_COOKIE_SECURE = config('SETTINGS_TRUE',  cast=bool)
+SECURE_SSL_REDIRECT = config('SETTINGS_TRUE', cast=bool)
+SECURE_SSL_HOST=config('ALLOWED_HOSTS', cast=Csv())[1]
 
 
 # hsts settings
 SECURE_HSTS_INCLUDE_SUBDOMAINS = config(
-    'SECURE_HSTS_INCLUDE_SUBDOMAINS',  cast=bool)
-SECURE_HSTS_PRELOAD = config('SECURE_HSTS_PRELOAD',  cast=bool)
+    'SETTINGS_TRUE',  cast=bool)
+SECURE_HSTS_PRELOAD = config('SETTINGS_TRUE',  cast=bool)
 SECURE_HSTS_SECONDS = config('SECURE_HSTS_SECONDS', cast=int)
 print(ALLOWED_HOSTS)
 
