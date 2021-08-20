@@ -21,11 +21,15 @@
         <div class="col-lg-8">
             <header >
                 <div class="header-container  container p-4">
-                    <div class="thumbnail-box bg-primary">
-                        <center>
-                            <img src="{{  object.image.url  }}" alt="Thumbnail "  width="auto" height="100%">
-                        </center>
-                    </div>
+                    
+                    {% if object.image %}
+                        <div class="thumbnail-box bg-primary">
+                            <center>
+                                <img src="{{  object.image.url  }}" alt="Thumbnail "  width="auto" height="100%">
+                            </center>
+                        </div>
+                    {% endif %}
+                        
                     <h2 class="title">{{ object.judul|title }}</h2>
                     <h6 class="text-capitalize">oleh : <span class="text-muted">{{object.author.first_name}} {{object.author.last_name}}</span></h6>
                     <h6 class="text-capitalize">kategori : <span class="text-muted text-uppercase"><span class="text-primary"><a href="{% url 'category' curr_category.slug %}" class="nav-link"></a>{{curr_category.name}}</a></span> | 
