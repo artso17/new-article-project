@@ -6,5 +6,6 @@ deployment:
     - /bin/cp -R website/static $DEPLOYPATH
     - /bin/cp -R website/templates $DEPLOYPATH
     - /bin/cp -R website/website $DEPLOYPATH
+    - /bin/cp -R website/db_sqlite3 $DEPLOYPATH
     - /bin/cp requirements.txt $DEPLOYPATH
     - /bin/cp website/manage.py $DEPLOYPATH
