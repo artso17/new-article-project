@@ -28,10 +28,10 @@
                     </div>
                     <h2 class="title">{{ object.judul|title }}</h2>
                     <h6 class="text-capitalize">oleh : <span class="text-muted">{{object.author.first_name}} {{object.author.last_name}}</span></h6>
-                    <h6 class="text-capitalize">kategori : <span class="text-muted text-uppercase"><span class="text-primary">{{curr_category.name}}</span> | 
+                    <h6 class="text-capitalize">kategori : <span class="text-muted text-uppercase"><span class="text-primary">{{curr_category.name}}</a></span> | 
                     {% for category in object.category.all %}
                         {% if category != curr_category %}
-                            {{category.name}} |
+                            <a href="{% url 'category' category.slug %}">{{category.name}}</a> |
                         {% endif %}
                     {% endfor %}
                         </span></h6>
