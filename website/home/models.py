@@ -33,7 +33,7 @@ class Article(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     judul = models.CharField(max_length=100, blank=True)
     category = models.ManyToManyField(Category)
-    image = models.ImageField(upload_to='image/artikel', blank=True)
+    image = models.ImageField(upload_to='image/artikel', blank=True, null=True)
     isi = RichTextUploadingField()
     likes = models.ManyToManyField(User, related_name='likes_blog', blank=True)
     created = models.DateField(auto_now_add=True, blank=True, editable=False)
