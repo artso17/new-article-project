@@ -186,9 +186,6 @@ div.loading-background .loader::after {
 }
 
 @media (max-width: 992px) {
-  .header-container .thumbnail-box img {
-    height: 150px;
-  }
   .category-section {
     position: static !important;
   }

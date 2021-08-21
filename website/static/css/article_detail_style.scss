@@ -29,6 +29,12 @@ article article img {
 @media (max-width: 767.98px) {}
 
 @media (max-width: 576px) {
+    div.thumbnail-box img {
+        height: auto !important;
+        width: 100% !important;
+        max-width: none !important;
+    }
+
     article article img {
         height: auto !important;
         width: 100% !important;
