@@ -1,10 +1,8 @@
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/artsodev/files1.1.1-artsodevalog.tech/
+    - export DEPLOYPATH=/home/artsodev/files1.1.2-artsodevalog.tech/
     - /bin/cp -R website/home $DEPLOYPATH
-    - /bin/cp -R website/static_root $DEPLOYPATH
     - /bin/cp -R website/static $DEPLOYPATH
     - /bin/cp -R website/templates $DEPLOYPATH
     - /bin/cp -R website/website $DEPLOYPATH
     - /bin/cp requirements.txt $DEPLOYPATH
-    - /bin/cp website/manage.py $DEPLOYPATH
