@@ -40,7 +40,7 @@ class Article(models.Model):
     updated = models.DateField(auto_now=True, blank=True, editable=False)
     published = models.BooleanField(default=False)
     snippet = models.TextField(blank=True)
-    slug = models.SlugField(blank=True, editable=False)
+    slug = models.SlugField(max_length=100, blank=True, editable=False)
 
     def save(self):
         self.slug = slugify(self.judul)
