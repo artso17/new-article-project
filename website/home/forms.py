@@ -127,6 +127,7 @@ class ArticleForm(forms.ModelForm):
             ),
             'category': forms.CheckboxSelectMultiple(),
             'judul': forms.TextInput(attrs={'class': 'form-control'}),
+            'snippet': forms.Textarea(attrs={'class': 'form-control'}),
             'image': forms.FileInput(attrs={'class': 'form-control'}),
             'published': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }

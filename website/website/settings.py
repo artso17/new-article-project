@@ -14,7 +14,8 @@ from pathlib import Path
 from decouple import config, Csv
 import dj_database_url
 from dj_database_url import parse as db_url
-
+import random
+import string
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,11 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
-
+SECRET_KEY = ''.join(random.sample(string.ascii_letters +
+                     string.digits+string.punctuation, 70))
+# print(SECRET_KEY)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
-print(DEBUG)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 
@@ -131,7 +132,7 @@ DATABASES = {
         cast=db_url
     )
 }
-if not DEBUG:
+if ALLOWED_HOSTS[0] != '*':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -145,6 +146,7 @@ if not DEBUG:
             },
         }
     }
+# print(ALLOWED_HOSTS[0]=='*')
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -211,22 +213,22 @@ EMAIL_FROM_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
-EMAIL_USE_SSL = config('EMAIL_USE_SSL', cast=bool)
+
+EMAIL_USE_SSL = config('SETTINGS_TRUE', cast=bool)
 # print(EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER,
 #       EMAIL_HOST_PASSWORD, EMAIL_USE_SSL)
 # http settings
 SESSION_COOKIE_SECURE = config(
-    'SESSION_COOKIE_SECURE', cast=bool)
-CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE',  cast=bool)
-SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', cast=bool)
-
+    'SETTINGS_TRUE', cast=bool)
+CSRF_COOKIE_SECURE = config('SETTINGS_TRUE',  cast=bool)
+SECURE_SSL_REDIRECT = config('SETTINGS_TRUE', cast=bool)
+SECURE_SSL_HOST = config('ALLOWED_HOSTS', cast=Csv())[0]
 
 # hsts settings
 SECURE_HSTS_INCLUDE_SUBDOMAINS = config(
-    'SECURE_HSTS_INCLUDE_SUBDOMAINS',  cast=bool)
-SECURE_HSTS_PRELOAD = config('SECURE_HSTS_PRELOAD',  cast=bool)
+    'SETTINGS_TRUE',  cast=bool)
+SECURE_HSTS_PRELOAD = config('SETTINGS_TRUE',  cast=bool)
 SECURE_HSTS_SECONDS = config('SECURE_HSTS_SECONDS', cast=int)
-print(ALLOWED_HOSTS)
 
 # secure policy
 SECURE_REFERRER_POLICY = config('SECURE_REFERRER_POLICY')
