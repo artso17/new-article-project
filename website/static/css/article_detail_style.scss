@@ -20,7 +20,7 @@ article article img {
     article article img,
     div.thumbnail-box img {
         height: auto !important;
-        width: 70% !important;
+        width: 100% !important;
 
     }
 }
@@ -29,10 +29,15 @@ article article img {
 @media (max-width: 767.98px) {}
 
 @media (max-width: 576px) {
-    article article img {
+
+    article article img,
+    div.thumbnail-box img {
         height: auto !important;
         width: 100% !important;
+        max-width: 100% !important;
     }
+
+
 
     .user-action {
         flex-direction: column !important;

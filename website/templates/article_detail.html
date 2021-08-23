@@ -68,7 +68,7 @@
                     <ul class="list-group list-group-horizontal text-capitalize pb-3" >
                         <li class="list-group-item "><a class="nav-link social-share p-0" target="_blank" rel="noreferrer" name="facebook_share" href="#"><img src="{% static 'img/icon/facebook.svg' %}" alt="Share Facebook" class="facebook-icon" height="30px"></a></li>
                         <li class="list-group-item "><a class="nav-link social-share p-0" target="_blank" rel="noreferrer" name="linkedin_share" href="#"><img src="{% static 'img/icon/linkedin.svg' %}" alt="Share Linkedin" class="linkedin-icon" height="30px"></a></li>
-                        <li class="list-group-item "><a class="nav-link social-share p-0" target="_blank" rel="noreferrer" name="whatsapp_share" href="https://api.whatsapp.com/send?text={{object.judul|urlencode}} {{ request.build_absolute_uri|urlencode }}"><img src="{% static 'img/icon/whatsapp.svg' %}" alt="Share Whatsapp" class="whatsapp-icon" height="30px"></a></li>
+                        <li class="list-group-item "><a class="nav-link social-share p-0" target="_blank" rel="noreferrer" name="whatsapp_share" href="#"><img src="{% static 'img/icon/whatsapp.svg' %}" alt="Share Whatsapp" class="whatsapp-icon" height="30px"></a></li>
                     </ul>
 
                 </nav>
@@ -78,7 +78,14 @@
                     <div class="comment-container">
                         {% for comment in comments %}
                         <section class="comment-section">
-                            <p>Dari: <strong>{{comment.author}}</strong></p>
+                            <div class="col justify-content-between d-flex">
+                                <p>Dari: <strong>{{comment.author}}</strong></p>
+                                
+                                {% if request.user == comment.author %}
+                                    <p><strong>X</strong></p>
+                                {% endif %}
+                                    
+                            </div>
                             <p>{{comment.isi|safe}}</p>
                             <hr>
                         </section>
@@ -135,7 +142,7 @@
                             {% endfor %}
                             <a href="{% url 'category' curr_category.slug %}" class="list-group-item text-primary">Selengkapnya...</a>
 
-                          </div>
+                        </div>
                             
                     </div>
                 </header>

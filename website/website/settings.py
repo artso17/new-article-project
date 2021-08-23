@@ -215,8 +215,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 
 EMAIL_USE_SSL = config('SETTINGS_TRUE', cast=bool)
-# print(EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER,
-#       EMAIL_HOST_PASSWORD, EMAIL_USE_SSL)
+
 # http settings
 SESSION_COOKIE_SECURE = config(
     'SETTINGS_TRUE', cast=bool)

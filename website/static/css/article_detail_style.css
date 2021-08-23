@@ -16,14 +16,16 @@ article article img {
   article article img,
   div.thumbnail-box img {
     height: auto !important;
-    width: 70% !important;
+    width: 100% !important;
   }
 }
 
 @media (max-width: 576px) {
-  article article img {
+  article article img,
+  div.thumbnail-box img {
     height: auto !important;
     width: 100% !important;
+    max-width: 100% !important;
   }
   .user-action {
     -webkit-box-orient: vertical !important;

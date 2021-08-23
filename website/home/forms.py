@@ -138,23 +138,3 @@ class PasswordResetForm(PasswordValidation, forms.Form):
         label='New Password', widget=forms.PasswordInput)
     password2 = forms.CharField(
         label='Confirm New Password', widget=forms.PasswordInput)
-
-
-# class PasswordResetForm(SetPasswordForm):
-#     lower = 'abcdefghijklmnopqrstu'
-#     upper = lower.upper()
-#     ucase = 0
-#     lcase = 0
-
-#     def clean_new_password1(self):
-#         new_password1 = self.cleaned_data.get("new_password1")
-
-#         for i in new_password1:
-#             if i in upper:
-#                 ucase += 1
-#             elif i in lower:
-#                 lcase += 1
-#         if ucase == 0 or lcase == 0:
-#             raise forms.ValidationError(
-#                 'Password should contain at least 1 uppercase and 1 lowercase.')
-#         return new_password1
