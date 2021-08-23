@@ -51,13 +51,16 @@ export const sendComment=(data,pk,...args)=>{
                 'data':data.value,
             },
             success:res=>{
-                args[1].innerHTML+=`
-                <section class="comment-section">
-                    <p>Dari: <strong>${res.data[0].author}</strong></p>
-                    <p>${res.data[0].isi}</p>
+                const e=res.data[0]
+                args[1].innerHTML+=
+                `<section class="comment-section">
+                    <div class="col justify-content-between d-flex">
+                    <p>Dari: <strong>${e.author}</strong></p>
+                    <button type="button" class="btn-close" aria-label="Close" value="${e.id}"></button>
+                    </div>
+                    <p>${e.isi}</p>
                     <hr>
-                </section>
-                `
+                </section>`
                 data.value=''
             },
             error:err=>{
@@ -70,7 +73,7 @@ export const sendComment=(data,pk,...args)=>{
     }
 }
 
-export const sendSearchData=(data,nameInput,nameTable,tableBody,csrf)=>{
+export const sendSearchData=(data,nameInput,nameTable,tableBody,csrf,detailUrl)=>{
     $.ajax(
         {
             type:'POST',
@@ -88,7 +91,7 @@ export const sendSearchData=(data,nameInput,nameTable,tableBody,csrf)=>{
                         data.forEach((e,i)=>{
                             nameTable.innerHTML+=`<tr>
                             <th scope="row">${i+1}</th>
-                            <td>${truncate(e.judul,2)}</td>
+                            <td><a href="/${detailUrl}/${e.slug}/${e.id}/${e.category_1st_slug}" class="nav-link">${truncate(e.judul,2)}</a></td>
                             <td>
                                 ${e.category.join(' ')}
                             </td>
@@ -154,22 +157,35 @@ export const showMoreComm=(csrf,...args)=>{
                 'data':args[1].value,
             },
             success:res=>{
+                // console.log(res)
                 res.data.forEach(e=>{
-                    args[2].innerHTML+=`
-                    <section class="comment-section">
-                        <p>Dari: <strong>${e.author}</strong></p>
-                        <p>${e.isi}</p>
-                        <hr>
-                    </section>
-                    `
-                })
-                args[1].value=res.end_data
-                args[4].children[0].value=res.end_data
-                if (args[2].children.length>= 11) args[4].classList.remove('d-none')
-                if (args[2].children.length===res.len_data) args[3].classList.add('d-none')
-            },
-            error:err=>console.log(err)
-        })
+                    if (res.request_user == e.author){
+                        args[2].innerHTML+=
+                        `<section class="comment-section">
+                            <div class="col justify-content-between d-flex">
+                                <p>Dari: <strong>${e.author}</strong></p>
+                                <button type="button" class="btn-close" aria-label="Close" value="${e.id}"></button>
+                            </div>
+                            <p>${e.isi}</p>
+                            <hr>
+                        </section>`
+                    }else{
+                            args[2].innerHTML+=`
+                            <section class="comment-section">
+                                <p>Dari: <strong>${e.author}</strong></p>
+                                <p>${e.isi}</p>
+                                <hr>
+                            </section>
+                            `
+                        }
+                        args[1].value=res.end_data
+                        args[4].children[0].value=res.end_data
+                        if (args[2].children.length>= 11) args[4].classList.remove('d-none')
+                        if (args[2].children.length===res.len_data) args[3].classList.add('d-none')
+                }
+            )
+        },error:err=>console.log(err)
+    })
         
     }
 }
@@ -194,4 +210,18 @@ export const showLessComm=(comm,...args)=>{
         `
     }
     if (amount===10) args[1].parentElement.classList.add('d-none')
+}
+
+export const delComment=(data,csrf)=>{
+    $.ajax({
+        type:'POST',
+        url:'/delete-comment/',
+        data:{
+            'csrfmiddlewaretoken':csrf,
+            'data':data
+        },success:res=>{
+            // console.log(res)
+        },error:err=>console.log(err)
+    })
+
 }

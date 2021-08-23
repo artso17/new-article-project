@@ -103,10 +103,21 @@ def activation_email_view(request, uidb64, token):
     return render(request, 'register/token_invalid.html')
 
 
+def delete_comment(request):
+    if request.is_ajax():
+        print(request.POST)
+        print(get_object_or_404(Comment, id=request.POST['data']))
+        obj = get_object_or_404(Comment, id=request.POST['data'])
+        obj.delete()
+        return JsonResponse({'success': 'succes delete'})
+    return JsonResponse({})
+
+
 def show_more_comments_view(request):
     if request.is_ajax():
         pk = request.POST['pk']
         data = int(request.POST['data'])
+
         end_data = data+10
         curr_obj = Comment.objects.filter(article__id=pk)[data:end_data]
         qs = []
@@ -114,15 +125,17 @@ def show_more_comments_view(request):
             item = {
                 'author': obj.author.username,
                 'isi': obj.isi,
+                'id': obj.id
             }
             qs.append(item)
         len_data = len(get_list_or_404(Comment, article__id=pk))
-        print(len(get_list_or_404(Comment, article__id=pk)))
-        return JsonResponse({'data': qs, 'end_data': end_data, 'len_data': len_data})
+        # print(len(get_list_or_404(Comment, article__id=pk)))
+        print(request.user)
+        return JsonResponse({'data': qs, 'end_data': end_data, 'len_data': len_data, 'request_user': request.user.username})
     return JsonResponse({})
 
 
-@login_required
+@ login_required
 def comment_ajax_view(request):
     if request.is_ajax():
         pk = request.POST['pk']
@@ -132,13 +145,14 @@ def comment_ajax_view(request):
         curr_obj = Comment.objects.filter(article__id=pk).last()
         qs = [{
             'author': curr_obj.author.username,
-            'isi': curr_obj.isi
+            'isi': curr_obj.isi,
+            'id': curr_obj.id
         }]
 
     return JsonResponse({'data': qs})
 
 
-@login_required
+@ login_required
 def likes_ajax_view(request):
     if request.is_ajax():
         pk = request.POST['data']
@@ -157,8 +171,8 @@ def likes_ajax_view(request):
         return JsonResponse({'data': data})
 
 
-@login_required(login_url='account_login')
-@allowed_hosts(allowed_groups=['superuser'])
+@ login_required(login_url='account_login')
+@ allowed_hosts(allowed_groups=['superuser'])
 def search_article_view(request):
     if request.is_ajax():
         res = None
@@ -177,6 +191,9 @@ def search_article_view(request):
                             'updated': obj.updated.strftime('%d/%m/%y'),
                             'published': obj.published,
                             'category': [cate.name for cate in obj.category.all()],
+                            'slug': obj.slug,
+                            'category_1st_slug': obj.category.first().slug,
+
                         }
                         qs.append(item)
                     return JsonResponse({'data': qs})
@@ -280,8 +297,8 @@ def search_article_view(request):
     return JsonResponse({})
 
 
-@login_required(login_url='account_login')
-@allowed_hosts(allowed_groups=['superuser'])
+@ login_required(login_url='account_login')
+@ allowed_hosts(allowed_groups=['superuser'])
 def admin_list_view(request):
     print(request.user.groups.all()[0])
     context = {
@@ -301,7 +318,8 @@ def search_view(request):
     }
     if request.method == 'POST' and request.POST['searched'] != ['']:
         search = request.POST['searched']
-        article = Article.objects.filter(Q(judul__contains=search))
+        article = Article.objects.filter(
+            Q(judul__contains=search) & Q(published=True))
         if article.exists():
             context['object_list'] = article[:20]
     return render(request, 'article_list.html', context)

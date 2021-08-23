@@ -48,7 +48,7 @@
                 {% for article in object_list %}
                     <tr >
                         <th scope="row">{{forloop.counter}}</th>
-                        <td>{{article.judul|truncatewords:2}}</td>
+                        <td><a href="{% url 'detail' article.slug article.id article.category.first.slug %}" class="nav-link">{{article.judul|truncatewords:2}}</a></td>
                         <td>
                         {% for category in article.category.all %}
                             {{category}}

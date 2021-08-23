@@ -40,7 +40,7 @@ class Article(models.Model):
     updated = models.DateField(auto_now=True, blank=True, editable=False)
     published = models.BooleanField(default=False)
     snippet = models.TextField(blank=True)
-    slug = models.SlugField(blank=True, editable=False)
+    slug = models.CharField(max_length=100, blank=True, editable=False)
 
     def save(self):
         self.slug = slugify(self.judul)
@@ -64,6 +64,8 @@ class Comment(models.Model):
         Article, on_delete=models.CASCADE, related_name='article_comments')
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     isi = models.TextField()
+    created = models.DateTimeField(
+        auto_now_add=True, blank=True, editable=False)
 
     class Meta:
         """Meta definition for Comment."""
