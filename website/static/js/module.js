@@ -55,10 +55,13 @@ export const sendComment=(data,pk,...args)=>{
                 args[1].innerHTML+=
                 `<section class="comment-section">
                     <div class="col justify-content-between d-flex">
-                    <p>Dari: <strong>${e.author}</strong></p>
-                    <button type="button" class="btn-close" aria-label="Close" value="${e.id}"></button>
+                        <p class="mb-0">Dari: <strong>${e.author}</strong></p>
+                        <button type="button" class="btn-close" aria-label="Close" value="${e.id}"></button>
                     </div>
-                    <p>${e.isi}</p>
+                    <p class="mb-0">${e.isi}</p>
+                    <div class="d-flex justify-content-end">
+                        <p class="mb-0">${e.created}</p>
+                    </div>
                     <hr>
                 </section>`
                 data.value=''
@@ -163,17 +166,23 @@ export const showMoreComm=(csrf,...args)=>{
                         args[2].innerHTML+=
                         `<section class="comment-section">
                             <div class="col justify-content-between d-flex">
-                                <p>Dari: <strong>${e.author}</strong></p>
+                                <p class="mb-0">Dari: <strong>${e.author}</strong></p>
                                 <button type="button" class="btn-close" aria-label="Close" value="${e.id}"></button>
                             </div>
-                            <p>${e.isi}</p>
+                            <p class="mb-0">${e.isi}</p>
+                            <div class="d-flex justify-content-end">
+                                <p class="mb-0">${e.created}</p>
+                            </div>
                             <hr>
                         </section>`
                     }else{
                             args[2].innerHTML+=`
                             <section class="comment-section">
-                                <p>Dari: <strong>${e.author}</strong></p>
-                                <p>${e.isi}</p>
+                                <p class="mb-0">Dari: <strong>${e.author}</strong></p>
+                                <p class="mb-0">${e.isi}</p>
+                                <div class="d-flex justify-content-end">
+                                    <p class="mb-0">${e.created}</p>
+                                </div>
                                 <hr>
                             </section>
                             `
@@ -189,6 +198,7 @@ export const showMoreComm=(csrf,...args)=>{
         
     }
 }
+
 export const showLessComm=(comm,...args)=>{
     const children=comm.children.length
     let amount=0

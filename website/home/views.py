@@ -1,3 +1,6 @@
+
+from django.utils import timezone
+import datetime
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
@@ -125,12 +128,15 @@ def show_more_comments_view(request):
             item = {
                 'author': obj.author.username,
                 'isi': obj.isi,
-                'id': obj.id
+                'id': obj.id,
+                'created': obj.created.strftime("%b. %d, %Y, %H:%M"),
             }
+            print(obj.created)
+            print(obj.created.strftime("%b. %d, %Y, %H:%M"))
+            # diff = timezone.now()-obj.created
+
             qs.append(item)
         len_data = len(get_list_or_404(Comment, article__id=pk))
-        # print(len(get_list_or_404(Comment, article__id=pk)))
-        print(request.user)
         return JsonResponse({'data': qs, 'end_data': end_data, 'len_data': len_data, 'request_user': request.user.username})
     return JsonResponse({})
 
@@ -146,7 +152,8 @@ def comment_ajax_view(request):
         qs = [{
             'author': curr_obj.author.username,
             'isi': curr_obj.isi,
-            'id': curr_obj.id
+            'id': curr_obj.id,
+            'created': curr_obj.created.strftime("%b. %d, %Y, %H:%M"),
         }]
 
     return JsonResponse({'data': qs})
@@ -399,6 +406,7 @@ class ArticleDetailView(DetailView):
                 category__slug=self.kwargs['category']).exclude(Q(id=self.kwargs['pk']) | Q(published=False)).order_by('-updated')[:5],
             'comments': Comment.objects.filter(article__id=self.kwargs['pk'])[:10]
         }
+
         self.kwargs.update(self.extra_context)
         return super().get_context_data()
 
