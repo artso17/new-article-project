@@ -35,7 +35,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 # Application definition
 
 INSTALLED_APPS = [
-    'whitenoise.runserver_nostatic',
+    # 'whitenoise.runserver_nostatic',
     'django_unused_media',
 
     'django.contrib.admin',
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'home.apps.HomeConfig',
     'django_cleanup',
+
 
 
 
@@ -69,7 +70,8 @@ CKEDITOR_CONFIGS = {
 CKEDITOR_UPLOAD_PATH = 'uploads'
 
 MIDDLEWARE = [
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
+
 
 
     'django.middleware.security.SecurityMiddleware',
@@ -169,7 +171,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'id'
 
 TIME_ZONE = 'Asia/Jakarta'
 
@@ -184,10 +186,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
-STATIC_ROOT = BASE_DIR / 'static_root'
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'static',
+# ]
+# STATIC_ROOT = BASE_DIR / 'static_root'
 
 # media
 MEDIA_URL = '/media/'
@@ -201,7 +203,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # whitenoise
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 # message
 
 
@@ -240,3 +242,18 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
+
+# s3
+AWS_ACCESS_KEY_ID = 'AKIAWPBPJ4REBGWZQA5R'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'artsodevalog'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+
+AWS_LOCATION = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]

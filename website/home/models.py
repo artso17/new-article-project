@@ -9,6 +9,21 @@ from .utils import *
 from PIL import Image
 
 
+# class ArticleManager(models.Manager):
+#     def all(self):
+
+
+#     def rerfesh_shortcodes(self):
+#         articles = Article.objects.all()
+#         old = articles.count()
+#         new_codes = 0
+#         for article in articles:
+#             article.shortcode = check_code(article)
+#             article.save()
+#             new_codes += 1
+#         return f'success refresh {old} codes from {new_codes} codes. '
+
+
 class Category(models.Model):
     """Model definition for Category."""
 

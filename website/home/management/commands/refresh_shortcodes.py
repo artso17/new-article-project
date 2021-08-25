@@ -1,0 +1,18 @@
+from django.core.management.base import BaseCommand, CommandError
+from home.models import Article
+from home.utils import check_code
+
+
+class Command(BaseCommand):
+    help = 'Closes the specified poll for voting'
+
+    def handle(self, *args, **options):
+        articles = Article.objects.all()
+        old = articles.count()
+        new_code = 0
+        for article in articles:
+            article.shortcode = check_code(article)
+            article.save()
+            new_code += 1
+            print(article.shortcode)
+        return f'success refresh {old} codes from {new_code} codes'
