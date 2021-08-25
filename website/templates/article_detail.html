@@ -160,5 +160,16 @@
 
 {% block script %}
 <script type="module" src="{% static 'js/article_detail.js' %}" defer></script>
+<script>
+    const socialShare=document.getElementsByClassName('social-share')
+    const posttitle= encodeURI('Ingin tahu kelanjutannya? Cek selengkapnya di Artsodevalog:')
+    const url=encodeURIComponent(window.location.origin)
+    const code=encodeURIComponent("{% url 'redirect' object.shortcode %}")
+    console.log(code)
+    const postUrl=url+code
+    socialShare['facebook_share'].setAttribute('href',`https://www.facebook.com/sharer.php?u=${postUrl}`)
+    socialShare['whatsapp_share'].setAttribute('href',`https://api.whatsapp.com/send?text=${posttitle} ${postUrl}`)
+    socialShare['linkedin_share'].setAttribute('href',`https://www.linkedin.com/shareArticle?mini=true&url=${postUrl}&title=${posttitle}`)
+</script>
 {% endblock  %}
     

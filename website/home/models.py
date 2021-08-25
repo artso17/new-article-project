@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.contrib.auth import settings
 from ckeditor_uploader.fields import RichTextUploadingField
+from .utils import *
 from PIL import Image
 
 
@@ -41,9 +42,13 @@ class Article(models.Model):
     published = models.BooleanField(default=False)
     snippet = models.TextField(blank=True)
     slug = models.CharField(max_length=100, blank=True, editable=False)
+    shortcode = models.CharField(
+        max_length=5, blank=True)
 
     def save(self):
         self.slug = slugify(self.judul)
+        if not self.shortcode or self.shortcode == '':
+            self.shortcode = check_code(self)
         return super().save()
 
     def get_absolute_url(self):

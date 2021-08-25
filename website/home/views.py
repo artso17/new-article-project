@@ -9,7 +9,7 @@ import json
 from .forms import *
 from .models import *
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, FormView, RedirectView
 from django.views.generic.list import MultipleObjectMixin
 from django.db.models import Q
 from django.contrib.auth.models import User, Group
@@ -432,7 +432,7 @@ class ArticleCreateView(GetFormClassMixin, GetAbsoluteUrlMixin, CreateView):
     }
 
 
-@ method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
+@method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
 class ArticleUpdateView(GetQuerysetMixin, GetFormClassMixin, GetAbsoluteUrlMixin, UpdateView):
     template_name = "article_edit.html"
     extra_context = {
@@ -440,7 +440,20 @@ class ArticleUpdateView(GetQuerysetMixin, GetFormClassMixin, GetAbsoluteUrlMixin
     }
 
 
-@ method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
+@method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
 class ArticleDeleteView(GetQuerysetMixin, DeleteView):
     template_name = "delete_view.html"
     success_url = reverse_lazy('adminList')
+
+
+class ArticleRedirectView(RedirectView):
+    pattern_name = 'detail'
+
+    def get_redirect_url(self, *args, **kwargs):
+        qs = get_object_or_404(Article, shortcode=kwargs['code'])
+        kwargs = {
+            'pk': qs.id,
+            'judul': qs.slug,
+            'category': qs.category.first().slug
+        }
+        return super().get_redirect_url(*args, **kwargs)
