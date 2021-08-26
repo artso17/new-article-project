@@ -108,8 +108,6 @@ def activation_email_view(request, uidb64, token):
 
 def delete_comment(request):
     if request.is_ajax():
-        print(request.POST)
-        print(get_object_or_404(Comment, id=request.POST['data']))
         obj = get_object_or_404(Comment, id=request.POST['data'])
         obj.delete()
         return JsonResponse({'success': 'succes delete'})
@@ -131,8 +129,6 @@ def show_more_comments_view(request):
                 'id': obj.id,
                 'created': timezone.localtime(obj.created).strftime("%b. %d, %Y, %H:%M"),
             }
-            print(obj.created)
-            print(obj.created.strftime("%b. %d, %Y, %H:%M"))
             # diff = timezone.now()-obj.created
 
             qs.append(item)
@@ -287,7 +283,6 @@ def search_article_view(request):
                             'name': obj.name,
                         }
                         qs.append(item)
-                        print(obj.id)
                     return JsonResponse({'data': qs})
                 else:
                     qs = 'oops... data tidak ditemukan.'
@@ -307,7 +302,6 @@ def search_article_view(request):
 @ login_required(login_url='account_login')
 @ allowed_hosts(allowed_groups=['superuser'])
 def admin_list_view(request):
-    print(request.user.groups.all()[0])
     context = {
         'object_list': Article.objects.all(),
         'page_title': 'Admin List',

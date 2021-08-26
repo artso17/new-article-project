@@ -54,8 +54,8 @@
                 {% endfor %}
               </div>
               
-                {% if article.image %}
-                  <div class="image-thumbnail col-md-4  d-lg-block" style="background-image:url({{article.image.url}}) ;">
+                {% if article.thumbnail %}
+                  <div class="image-thumbnail col-md-4  d-lg-block" style="background-image:url({{article.thumbnail.url}}) ;">
                       <p>ansatsu</p>
                   </div>
                 {% else %}
@@ -81,8 +81,8 @@
                     <p class="card-text mb-auto">{{article.snippet|truncatewords:10}}</p>
                     <a href="{% url 'detail' article.slug article.id article.category.all|first|slugify %}" class="stretched-link">Continue reading</a>
                   </div>
-                  {% if article.image %}
-                    <div class="image-thumbnail col-md-4  d-lg-block" style="background-image:url({{ article.image.url }});">
+                  {% if article.thumbnail %}
+                    <div class="image-thumbnail col-md-4  d-lg-block" style="background-image:url({{ article.thumbnail.url }});">
                       <p>ansatsu</p>
                     </div>
                   {% else %}

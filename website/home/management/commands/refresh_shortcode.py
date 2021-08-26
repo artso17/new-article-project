@@ -12,6 +12,8 @@ class Command(BaseCommand):
         new_codes = 0
         for article in articles:
             article.shortcode = check_code(article)
+            article.save()
             new_codes += 1
+
             print(article.shortcode)
         return f'Success generate {new_codes} from {old_codes} codes'
