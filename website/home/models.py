@@ -46,9 +46,9 @@ def thumbnail(instance):
     instance.image = f'image/artikel/{instance.id}/600_{imag}'
     img.save(f'{upat}/600_{imag}')
 
-    img.thumbnail(image_600)
-    instance.thumbnail = f'image/artikel/{instance.id}/thumbnail600_{imag}'
-    img.save(f'{upat}/thumbnail600_{imag}')
+    # img.thumbnail(image_600)
+    # instance.thumbnail = f'image/artikel/{instance.id}/thumbnail600_{imag}'
+    # img.save(f'{upat}/thumbnail600_{imag}')
 
 
 class Article(models.Model):
@@ -56,8 +56,6 @@ class Article(models.Model):
     judul = models.CharField(max_length=100, blank=True)
     category = models.ManyToManyField(Category)
     image = models.ImageField(upload_to=upload_location, blank=True, null=True)
-    thumbnail = models.ImageField(
-        upload_to=upload_location, blank=True, null=True)
     isi = RichTextUploadingField()
     likes = models.ManyToManyField(User, related_name='likes_blog', blank=True)
     created = models.DateField(auto_now_add=True, blank=True, editable=False)
