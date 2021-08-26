@@ -9,7 +9,7 @@ const socialShare=document.getElementsByClassName('social-share')
 const posttitle= encodeURI('Ingin tahu kelanjutannya? Cek selengkapnya di Artsodevalog:')
 const postUrl=encodeURIComponent(window.location.origin)
 // console.log(postUrl)
-console.log(socialShare[0])
+// console.log(socialShare[0])
 import * as modul from './module.js'
 
 

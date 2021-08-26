@@ -129,7 +129,7 @@ def show_more_comments_view(request):
                 'author': obj.author.username,
                 'isi': obj.isi,
                 'id': obj.id,
-                'created': obj.created.strftime("%b. %d, %Y, %H:%M"),
+                'created': timezone.localtime(obj.created).strftime("%b. %d, %Y, %H:%M"),
             }
             print(obj.created)
             print(obj.created.strftime("%b. %d, %Y, %H:%M"))
