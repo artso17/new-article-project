@@ -149,7 +149,7 @@ def comment_ajax_view(request):
             'author': curr_obj.author.username,
             'isi': curr_obj.isi,
             'id': curr_obj.id,
-            'created': curr_obj.created.strftime("%b. %d, %Y, %H:%M"),
+            'created': timezone.localtime(curr_obj.created).strftime("%b. %d, %Y, %H:%M"),
         }]
 
     return JsonResponse({'data': qs})

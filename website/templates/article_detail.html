@@ -31,8 +31,8 @@
                     {% endif %}
                         
                     <h2 class="title">{{ object.judul|title }}</h2>
-                    <h6 class="text-capitalize">oleh : <span class="text-muted">{{object.author.first_name}} {{object.author.last_name}}</span></h6>
-                    <h6 class="text-capitalize">kategori : <span class="text-muted text-uppercase"><span class="text-primary"><a href="{% url 'category' curr_category.slug %}" class="nav-link"></a>{{curr_category.name}}</a></span> | 
+                    <h6 class="text-capitalize">oleh : <span style="color: #616161;" class="">{{object.author.get_full_name}} </span></h6>
+                    <h6 class="text-capitalize">kategori : <span style="color: #616161;" class=" text-uppercase"><span class="text-primary"><a href="{% url 'category' curr_category.slug %}" class="nav-link"></a>{{curr_category.name}}</a></span> | 
                     {% for category in object.category.all %}
                         {% if category != curr_category %}
                             <a href="{% url 'category' category.slug %}">{{category.name}}</a> |
@@ -40,7 +40,7 @@
                     {% endfor %}
                         </span></h6>
 
-                    <h6 class="text-capitalize"><span class="text-muted">{{object.updated}}</span></h6>
+                    <h6 class="text-capitalize"><span style="color: #616161;" class="">{{object.updated}}</span></h6>
                 </div>
             </header>
             
