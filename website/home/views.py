@@ -365,7 +365,8 @@ class ArticleListView(ListView):
     queryset = Article.objects.all().exclude(
         published=False).order_by('-updated')[:20]
     template_name = "article_list.html"
-    extra_context = {'categories': Category.objects.all()}
+    extra_context = {'categories': Category.objects.all(),
+                     'qs_count': queryset.count() == 20}
 
 
 class ArticleCategoryListView(ListView):

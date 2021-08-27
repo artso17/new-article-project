@@ -49,7 +49,7 @@
               
             <form class="d-flex" action="{% url 'searchView' %}" method="POST">
               {% csrf_token %}
-              <input class="form-control me-2 rounded-pill" type="input" placeholder="Cari..." aria-label="Search" name="searched">
+              <input class="form-control me-2 rounded-pill" type="input" id="searched" placeholder="Cari..." aria-label="Search" name="searched">
               <button class="btn btn-outline-success text-capitalize rounded-pill" type="submit">cari</button>
             </form>
         </div>
@@ -67,7 +67,7 @@
                 <div class="footer-container row px-5">
                   
                     <div class="footer-box text-center  col-md ">
-                      <a class="nav-link text-capitalize py-0 text-light" href="https://artsodev.com/">
+                      <a class="nav-link text-capitalize py-0 text-light" href="https://www.artsodeva.site">
                         <h3 > About</h3>
                         <hr>
                         <img src="{% static 'img\icon\artsodeva-logo_200.png' %}" alt="Kunjungi Artsodeva" srcset="{% static 'img\icon\artsodeva-logo.png' %}" width="100px">
@@ -79,10 +79,10 @@
                         <h3>Links</h3>
                         <hr>
                         <a class="nav-link text-capitalize py-0" href="#home"><p class='text-light'>home</p></a>
-                        <a class="nav-link text-capitalize py-0" href="https://artsodev.com/#about"><p class='text-light'>about</p></a>
-                        <a class="nav-link text-capitalize py-0" href="https://artsodev.com/#service"><p class='text-light'>service</p></a>
-                        <a class="nav-link text-capitalize py-0" href="https://artsodev.com/#gallery"><p class='text-light'>gallery</p></a>
-                        <a class="nav-link text-capitalize py-0" href="https://artsodev.com/#contact"><p class='text-light'>contact</p></a>
+                        <a class="nav-link text-capitalize py-0" href="https://www.artsodeva.site/#about"><p class='text-light'>about</p></a>
+                        <a class="nav-link text-capitalize py-0" href="https://www.artsodeva.site/#service"><p class='text-light'>service</p></a>
+                        <a class="nav-link text-capitalize py-0" href="https://www.artsodeva.site/#gallery"><p class='text-light'>gallery</p></a>
+                        <a class="nav-link text-capitalize py-0" href="https://www.artsodeva.site/#contact"><p class='text-light'>contact</p></a>
                         <a class="nav-link text-capitalize py-0 disabled" href="#"><p class='text-light'>blog</p></a>
                     </div>
                   </div>
