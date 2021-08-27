@@ -98,6 +98,11 @@
           
         
       {% endfor %}
+      {% if qs_count %}
+        <blockquote>
+          <small><i>Beberapa artikel sengaja tidak ditampilkan, silahkan masukan kata kunci di bagian <a href="#searched">kolom pencarian</a> untuk menampilkan artikel terkait.</i></small>
+        </blockquote>
+      {% endif %}
         
     </article>
     

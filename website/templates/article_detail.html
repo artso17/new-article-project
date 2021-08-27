@@ -79,14 +79,17 @@
                         {% for comment in comments %}
                         <section class="comment-section">
                             <div class="col justify-content-between d-flex">
-                                <p>Dari: <strong>{{comment.author}}</strong></p>
+                                <p class="mb-0">Dari: <strong>{{comment.author}}</strong></p>
                                 
                                 {% if request.user == comment.author %}
-                                    <p><strong>X</strong></p>
+                                <button type="button" class="btn-close" aria-label="Close" value="{{comment.id}}"></button>
                                 {% endif %}
                                     
                             </div>
-                            <p>{{comment.isi|safe}}</p>
+                            <p class="mb-0">{{comment.isi|safe}}</p>
+                            <div class="d-flex justify-content-end">
+                                <p class="mb-0">{{comment.created|date:'M. d, Y, G:i'}}</p>
+                            </div>
                             <hr>
                         </section>
                         {% endfor %}
@@ -157,5 +160,16 @@
 
 {% block script %}
 <script type="module" src="{% static 'js/article_detail.js' %}" defer></script>
+<script>
+    const socialShare=document.getElementsByClassName('social-share')
+    const posttitle= encodeURI('Ingin tahu kelanjutannya? Cek selengkapnya di Artsodevalog:')
+    const url=encodeURIComponent(window.location.origin)
+    const code=encodeURIComponent("{% url 'redirect' object.shortcode %}")
+    // console.log(code)
+    const postUrl=url+code
+    socialShare['facebook_share'].setAttribute('href',`https://www.facebook.com/sharer.php?u=${postUrl}`)
+    socialShare['whatsapp_share'].setAttribute('href',`https://api.whatsapp.com/send?text=${posttitle} ${postUrl}`)
+    socialShare['linkedin_share'].setAttribute('href',`https://www.linkedin.com/shareArticle?mini=true&url=${postUrl}&title=${posttitle}`)
+</script>
 {% endblock  %}
     

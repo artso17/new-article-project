@@ -21,6 +21,8 @@ from django.views.static import serve
 from home.views import *
 
 urlpatterns = [
+    path('rect/<code>', ArticleRedirectView.as_view(), name='redirect'),
+    path('delete-comment/', delete_comment, name='del_comment'),
     path("password-reset-confirm/<uidb64>/<token>", password_reset_user_confirm_view,
          name="password_reset_confirm"),
     path("password-reset-done/", PasswordResetUserDone.as_view(),

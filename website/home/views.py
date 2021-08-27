@@ -1,3 +1,6 @@
+
+from django.utils import timezone
+import datetime
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
@@ -6,7 +9,7 @@ import json
 from .forms import *
 from .models import *
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, FormView, RedirectView
 from django.views.generic.list import MultipleObjectMixin
 from django.db.models import Q
 from django.contrib.auth.models import User, Group
@@ -103,10 +106,19 @@ def activation_email_view(request, uidb64, token):
     return render(request, 'register/token_invalid.html')
 
 
+def delete_comment(request):
+    if request.is_ajax():
+        obj = get_object_or_404(Comment, id=request.POST['data'])
+        obj.delete()
+        return JsonResponse({'success': 'succes delete'})
+    return JsonResponse({})
+
+
 def show_more_comments_view(request):
     if request.is_ajax():
         pk = request.POST['pk']
         data = int(request.POST['data'])
+
         end_data = data+10
         curr_obj = Comment.objects.filter(article__id=pk)[data:end_data]
         qs = []
@@ -114,15 +126,18 @@ def show_more_comments_view(request):
             item = {
                 'author': obj.author.username,
                 'isi': obj.isi,
+                'id': obj.id,
+                'created': timezone.localtime(obj.created).strftime("%b. %d, %Y, %H:%M"),
             }
+            # diff = timezone.now()-obj.created
+
             qs.append(item)
         len_data = len(get_list_or_404(Comment, article__id=pk))
-        print(len(get_list_or_404(Comment, article__id=pk)))
-        return JsonResponse({'data': qs, 'end_data': end_data, 'len_data': len_data})
+        return JsonResponse({'data': qs, 'end_data': end_data, 'len_data': len_data, 'request_user': request.user.username})
     return JsonResponse({})
 
 
-@login_required
+@ login_required
 def comment_ajax_view(request):
     if request.is_ajax():
         pk = request.POST['pk']
@@ -132,13 +147,15 @@ def comment_ajax_view(request):
         curr_obj = Comment.objects.filter(article__id=pk).last()
         qs = [{
             'author': curr_obj.author.username,
-            'isi': curr_obj.isi
+            'isi': curr_obj.isi,
+            'id': curr_obj.id,
+            'created': curr_obj.created.strftime("%b. %d, %Y, %H:%M"),
         }]
 
     return JsonResponse({'data': qs})
 
 
-@login_required
+@ login_required
 def likes_ajax_view(request):
     if request.is_ajax():
         pk = request.POST['data']
@@ -157,8 +174,8 @@ def likes_ajax_view(request):
         return JsonResponse({'data': data})
 
 
-@login_required(login_url='account_login')
-@allowed_hosts(allowed_groups=['superuser'])
+@ login_required(login_url='account_login')
+@ allowed_hosts(allowed_groups=['superuser'])
 def search_article_view(request):
     if request.is_ajax():
         res = None
@@ -177,6 +194,9 @@ def search_article_view(request):
                             'updated': obj.updated.strftime('%d/%m/%y'),
                             'published': obj.published,
                             'category': [cate.name for cate in obj.category.all()],
+                            'slug': obj.slug,
+                            'category_1st_slug': obj.category.first().slug,
+
                         }
                         qs.append(item)
                     return JsonResponse({'data': qs})
@@ -263,7 +283,6 @@ def search_article_view(request):
                             'name': obj.name,
                         }
                         qs.append(item)
-                        print(obj.id)
                     return JsonResponse({'data': qs})
                 else:
                     qs = 'oops... data tidak ditemukan.'
@@ -280,10 +299,9 @@ def search_article_view(request):
     return JsonResponse({})
 
 
-@login_required(login_url='account_login')
-@allowed_hosts(allowed_groups=['superuser'])
+@ login_required(login_url='account_login')
+@ allowed_hosts(allowed_groups=['superuser'])
 def admin_list_view(request):
-    print(request.user.groups.all()[0])
     context = {
         'object_list': Article.objects.all(),
         'page_title': 'Admin List',
@@ -301,7 +319,8 @@ def search_view(request):
     }
     if request.method == 'POST' and request.POST['searched'] != ['']:
         search = request.POST['searched']
-        article = Article.objects.filter(Q(judul__contains=search))
+        article = Article.objects.filter(
+            Q(judul__contains=search) & Q(published=True))
         if article.exists():
             context['object_list'] = article[:20]
     return render(request, 'article_list.html', context)
@@ -346,7 +365,8 @@ class ArticleListView(ListView):
     queryset = Article.objects.all().exclude(
         published=False).order_by('-updated')[:20]
     template_name = "article_list.html"
-    extra_context = {'categories': Category.objects.all()}
+    extra_context = {'categories': Category.objects.all(),
+                     'qs_count': queryset.count() == 20}
 
 
 class ArticleCategoryListView(ListView):
@@ -381,6 +401,7 @@ class ArticleDetailView(DetailView):
                 category__slug=self.kwargs['category']).exclude(Q(id=self.kwargs['pk']) | Q(published=False)).order_by('-updated')[:5],
             'comments': Comment.objects.filter(article__id=self.kwargs['pk'])[:10]
         }
+
         self.kwargs.update(self.extra_context)
         return super().get_context_data()
 
@@ -406,7 +427,7 @@ class ArticleCreateView(GetFormClassMixin, GetAbsoluteUrlMixin, CreateView):
     }
 
 
-@ method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
+@method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
 class ArticleUpdateView(GetQuerysetMixin, GetFormClassMixin, GetAbsoluteUrlMixin, UpdateView):
     template_name = "article_edit.html"
     extra_context = {
@@ -414,7 +435,20 @@ class ArticleUpdateView(GetQuerysetMixin, GetFormClassMixin, GetAbsoluteUrlMixin
     }
 
 
-@ method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
+@method_decorator(allowed_hosts(allowed_groups=['superuser']), name='dispatch')
 class ArticleDeleteView(GetQuerysetMixin, DeleteView):
     template_name = "delete_view.html"
     success_url = reverse_lazy('adminList')
+
+
+class ArticleRedirectView(RedirectView):
+    pattern_name = 'detail'
+
+    def get_redirect_url(self, *args, **kwargs):
+        qs = get_object_or_404(Article, shortcode=kwargs['code'])
+        kwargs = {
+            'pk': qs.id,
+            'judul': qs.slug,
+            'category': qs.category.first().slug
+        }
+        return super().get_redirect_url(*args, **kwargs)
