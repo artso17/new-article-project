@@ -6,15 +6,22 @@ const numLikes=document.getElementsByClassName('num-likes')[0]
 const commentInput=document.getElementById('comment')
 const commentCont=document.getElementsByClassName('comment-container')[0]
 const socialShare=document.getElementsByClassName('social-share')
-const posttitle= encodeURIComponent(`"${document.getElementsByTagName('h2')[0].innerHTML}" Ingin tahu kelanjutannya? Cek selengkapnya di Artsodevalog: `)
-const postUrl=encodeURIComponent(window.location.href)
-console.log(posttitle)
+const posttitle= encodeURI('Ingin tahu kelanjutannya? Cek selengkapnya di Artsodevalog:')
+const postUrl=encodeURIComponent(window.location.origin)
+// console.log(postUrl)
+// console.log(socialShare[0])
 import * as modul from './module.js'
 
+
+
+
+
+
+
 // console.log(encodeURIComponent(posttitle))
-socialShare['facebook_share'].setAttribute('href',`https://www.facebook.com/sharer.php?u=${postUrl}`)
-socialShare['whatsapp_share'].setAttribute('href',`https://api.whatsapp.com/send?text=${posttitle} ${postUrl}`)
-socialShare['linkedin_share'].setAttribute('href',`https://www.linkedin.com/shareArticle?mini=true&url=${postUrl}&title=${posttitle}`)
+// socialShare['facebook_share'].setAttribute('href',`https://www.facebook.com/sharer.php?u=${postUrl}`)
+// socialShare['whatsapp_share'].setAttribute('href',`https://api.whatsapp.com/send?text=${posttitle} ${postUrl}`)
+// socialShare['linkedin_share'].setAttribute('href',`https://www.linkedin.com/shareArticle?mini=true&url=${postUrl}&title=${posttitle}`)
 if (btn['show_more']!= undefined) btn['show_more'].addEventListener('click',e=>modul.showMoreComm(csrf,pk,e.target,commentCont,e.target.parentNode,btn['show_less'].parentNode))
 
 btn['show_less'].addEventListener('click',e=>{
@@ -25,4 +32,13 @@ btn['show_less'].addEventListener('click',e=>{
 
 if (likeBtn['like']!=undefined) likeBtn['like'].addEventListener('click',()=>modul.sendData(likeBtn['like'],csrf,numLikes))
 
-if (btn['comment_btn'!=undefined]) btn['comment_btn'].addEventListener('click',()=>modul.sendComment(commentInput,pk,csrf,commentCont))
+document.getElementsByClassName('comment-container')[0].addEventListener('click',e=>{
+    const btn=e.target
+    if (btn.className == 'btn-close'){
+            modul.delComment(e.target.value,csrf)
+            btn.parentNode.parentNode.parentNode.removeChild(btn.parentNode.parentNode)
+        }
+    }
+)
+
+if (btn['comment_btn'] != undefined) btn['comment_btn'].addEventListener('click',()=>modul.sendComment(commentInput,pk,csrf,commentCont))
