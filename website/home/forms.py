@@ -132,6 +132,19 @@ class ArticleForm(forms.ModelForm):
             'published': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
 
+    def clean_judul(self):
+        judul = self.cleaned_data.get('judul')
+        words = judul.split(' ')
+        if len(words) > 10:
+            raise forms.ValidationError('Judul should not greater than 10')
+        return judul
+
+    def clean_snippet(self):
+        snippet = self.cleaned_data.get('snippet')
+        if len(snippet) > 100:
+            raise forms.ValidationError('Snippet should not greater than 100')
+        return snippet
+
 
 class PasswordResetForm(PasswordValidation, forms.Form):
     password1 = forms.CharField(
